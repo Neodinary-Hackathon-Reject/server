@@ -10,4 +10,9 @@ public class TestController {
     public String hello() {
         return "hello";
     }
+
+    @GetMapping("/")
+    public String main() {
+        return "hello cloudType";
+    }
 }
