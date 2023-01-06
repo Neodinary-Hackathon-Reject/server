@@ -15,4 +15,9 @@ public class TestController {
     public String main() {
         return "hello cloudType";
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
 }

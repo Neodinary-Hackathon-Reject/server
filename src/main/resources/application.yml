@@ -1,2 +1,29 @@
 server:
   port: 8081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${RDS_DB_USERNAME}
+    password: ${RDS_DB_PASSWORD}
+    url: ${RDS_DB_URL}
+  jpa:
+    output:
+      ansi:
+        enabled: always
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        show_sql: true
+        format_sql: false
+        use_sql_comments: false
+        hbm2ddl:
+          auto: create
+        default_batch_fetch_size: 1000
+
+# allowed-origins ?? ??
+cors:
+  allowed-origins: '*'
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: '*'
+  max-age: 3600
