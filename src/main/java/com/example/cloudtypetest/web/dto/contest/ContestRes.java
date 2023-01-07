@@ -34,7 +34,7 @@ public class ContestRes {
         private List<String> jobList;
         private List<String> tendencyList;
         private Integer maxUserCount;
-        private Integer currentUserCount; // todo : currentCount 업데이트 방법?
+        private Integer currentUserCount;
     }
 
     @NoArgsConstructor

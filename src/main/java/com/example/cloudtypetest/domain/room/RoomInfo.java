@@ -21,6 +21,9 @@ public class RoomInfo extends BaseEntity {
 
     private Integer maxUserCount;
 
+    @Transient
+    private Integer currentUserCount;
+
     @Column
     @ElementCollection
     private List<String> roomJobList;

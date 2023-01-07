@@ -100,8 +100,14 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> findByContest(Long contestId) throws BaseException {
         Optional<Contest> optionalContest = contestRepository.findById(contestId);
-        if(optionalContest.isPresent())
-            return roomRepository.findByContest(optionalContest.get());
+        if(optionalContest.isPresent()) {
+            List<Room> roomList = roomRepository.findByContest(optionalContest.get());
+            for(Room room : roomList) {
+                long currentUserCount = roomUserRepository.findByRoomAndRoomRequestStatus(room, RoomRequestStatus.ACCEPT).size();
+                room.getRoomInfo().setCurrentUserCount(Integer.valueOf((int)currentUserCount));
+            }
+            return roomList;
+        }
         throw new BaseException(BaseResponseStatus.NOT_EXIST_CONTEST);
     }
 
