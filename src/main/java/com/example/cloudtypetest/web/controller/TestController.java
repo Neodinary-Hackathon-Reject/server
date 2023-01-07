@@ -30,11 +30,7 @@ public class TestController {
 
     @GetMapping("/test/jwt")
     public BaseResponse<String> jwtTest(){
-        try {
-            Long userId = tokenProvider.getUserIdx();
-            return new BaseResponse<>("유저 아이디값:" + userId);
-        }catch(BaseException e) {
-            return new BaseResponse<>(e.getStatus());
-        }
+        Long userId = tokenProvider.getUserIdx();
+        return new BaseResponse<>("유저 아이디값:" + userId);
     }
 }

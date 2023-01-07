@@ -14,4 +14,11 @@ public class UserRes {
     public static class Get{
 
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public class GetKeywordRes {
+        private String ab;
+    }
 }
