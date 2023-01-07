@@ -71,6 +71,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomUser> getPendingRoomUserList(User headUser, Long roomId) throws BaseException  {
         Optional<Room> optionalRoom = roomRepository.findById(roomId);
         if(optionalRoom.isPresent()) {
+            if(optionalRoom.get().getHeadUser() != headUser) throw new BaseException(BaseResponseStatus.NOT_HEAD_USER);
             List<RoomUser> roomUserList = roomUserRepository.findByRoomAndRoomRequestStatus(optionalRoom.get(), RoomRequestStatus.PENDING);
             return roomUserList;
         }
@@ -79,11 +80,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     public String confirmRequest(User headUser, RoomReq.ConfirmUser confirmUserDto) throws BaseException {
-        // todo : 헤드 유저의 권한인지 체크 필요, 나중으로 미루기
         Optional<Room> OptionalRoom = roomRepository.findById(confirmUserDto.getRoomId());
         Optional<User> OptionalUser = userRepository.findById(confirmUserDto.getUserId());
 
         if(OptionalRoom.isPresent() && OptionalUser.isPresent()) {
+            if(OptionalRoom.get().getHeadUser() != headUser) throw new BaseException(BaseResponseStatus.NOT_HEAD_USER);
+
             Optional<RoomUser> OptionalRoomUser = roomUserRepository.findByRoomAndUser(OptionalRoom.get(), OptionalUser.get());
             if(OptionalRoomUser.isPresent()) {
                 if(confirmUserDto.getAcceptStatus().equals("ACCEPT")) { // todo : 나중에 enum으로 리팩토링
