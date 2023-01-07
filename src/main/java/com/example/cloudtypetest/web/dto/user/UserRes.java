@@ -38,6 +38,7 @@ public class UserRes {
     @AllArgsConstructor
     @Builder
     public static class MateDto {
+        private Long userId;
         private String nickName;
         private String address;
         private String job;

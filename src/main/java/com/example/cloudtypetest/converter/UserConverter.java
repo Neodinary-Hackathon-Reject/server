@@ -10,6 +10,7 @@ public class UserConverter {
 
     public static UserRes.MateDto toMateDto(User user) {
         return UserRes.MateDto.builder()
+                .userId(user.getId())
                 .nickName(user.getNickname())
                 .address(user.getRegion())
                 .tendencyList(new ArrayList<>())

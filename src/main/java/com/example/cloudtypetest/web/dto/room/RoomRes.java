@@ -41,7 +41,9 @@ public class RoomRes {
     @AllArgsConstructor
     @Builder
     public static class RequestUser {
-        private String field;
+        private Long userId;
+        private String nickName;
+        private String contestName;
     }
 
     @NoArgsConstructor
@@ -65,6 +67,7 @@ public class RoomRes {
     @AllArgsConstructor
     @Builder
     public static class UserDto {
+        private Long userId;
         private String nickName;
         private String job;
         private List<String> tendencyList;

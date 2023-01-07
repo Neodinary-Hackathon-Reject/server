@@ -77,6 +77,8 @@ public class RoomRestController {
         return new BaseResponse<>(RoomConverter.toUserListDto(userList));
     }
 
+
+
     // todo : 여기 스펙이 불분명하므로 추후 작성
     @PatchMapping("/room/info")
     public BaseResponse<RoomRes.RoomInfoDto> updateRoomInfo() {
