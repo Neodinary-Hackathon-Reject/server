@@ -48,7 +48,7 @@ public class RoomConverter {
     public static RoomRes.RequestUser toRequestUserDto(RoomUser roomUser) {
         return RoomRes.RequestUser.builder()
                 .nickName(roomUser.getUser().getNickname())
-                .contestName("서포터즈 오로라 2기") // todo : 로직 추가
+                .contestName(roomUser.getRoom().getContest().getTitle())
                 .build();
     }
 
@@ -71,9 +71,9 @@ public class RoomConverter {
     public static RoomRes.UserDto toUserDto(User user) {
         return RoomRes.UserDto.builder()
                 .userId(user.getId())
-                .job("Developer") // todo : 추후 수정
+                .job(user.getJob().getJobName())
                 .nickName(user.getNickname())
-                .tendencyList(new ArrayList<>())
+                .tendencyList(user.getUserTendencyList())
                 .build();
     }
 
