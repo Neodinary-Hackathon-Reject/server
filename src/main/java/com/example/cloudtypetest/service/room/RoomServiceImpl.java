@@ -38,7 +38,7 @@ public class RoomServiceImpl implements RoomService {
     public Room createRoom(User user, RoomReq.CreateRoom createRoomDto) throws BaseException {
         Optional<Contest> optionalContest = contestRepository.findById(createRoomDto.getContestId());
         if(optionalContest.isPresent()) {
-            Room room = RoomConverter.toRoomEntity(createRoomDto, user);
+            Room room = RoomConverter.toRoomEntity(createRoomDto, user, optionalContest.get());
             Room createdRoom = roomRepository.save(room);
             RoomUser roomUser = RoomUser.builder()
                     .room(createdRoom)

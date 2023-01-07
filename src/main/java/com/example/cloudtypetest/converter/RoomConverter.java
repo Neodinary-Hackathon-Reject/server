@@ -1,5 +1,6 @@
 package com.example.cloudtypetest.converter;
 
+import com.example.cloudtypetest.domain.Contest;
 import com.example.cloudtypetest.domain.enums.RoomStatus;
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
@@ -14,17 +15,15 @@ import java.util.List;
 
 public class RoomConverter {
 
-    // todo : 구현 필요
-    public static Room toRoomEntity(RoomReq.CreateRoom createRoomDto, User user) {
+    public static Room toRoomEntity(RoomReq.CreateRoom createRoomDto, User user, Contest contest) {
         RoomInfo roomInfo = RoomInfo.builder()
                 .roomJobList(createRoomDto.getJobList())
                 .roomTendencyList(createRoomDto.getTendencyList())
                 .maxUserCount(createRoomDto.getMaxUserCount())
                 .build();
 
-        // todo : Contest셋팅해주기 contestId
         return Room.builder()
-                 // .contest()
+                .contest(contest)
                 .roomInfo(roomInfo)
                 .roomStatus(RoomStatus.RECRUITING)
                 .headUser(user)
