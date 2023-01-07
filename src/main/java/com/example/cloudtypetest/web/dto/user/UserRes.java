@@ -38,8 +38,9 @@ public class UserRes {
     @AllArgsConstructor
     @Builder
     public static class MateDto {
-        private String name;
+        private String nickName;
+        private String address;
         private String job;
-        // 화면 나오면 추가..
+        private List<String> tendencyList;
     }
 }

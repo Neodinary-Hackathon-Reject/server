@@ -10,8 +10,10 @@ public class UserConverter {
 
     public static UserRes.MateDto toMateDto(User user) {
         return UserRes.MateDto.builder()
-                .job("Developer")
-                .name("피터")
+                .nickName(user.getNickname())
+                .address(user.getRegion())
+                .tendencyList(new ArrayList<>())
+                .job("Developer") // todo : 테이블 바뀌면 바꿔주기
                 .build();
     }
 
