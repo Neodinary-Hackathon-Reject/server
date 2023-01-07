@@ -30,7 +30,11 @@ public class ContestRes {
     @AllArgsConstructor
     @Builder
     public static class RoomDto {
-        private String field;
+        private Long roomId;
+        private List<String> jobList;
+        private List<String> tendencyList;
+        private Integer maxUserCount;
+        private Integer currentUserCount; // todo : currentCount 업데이트 방법?
     }
 
     @NoArgsConstructor

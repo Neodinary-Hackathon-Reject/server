@@ -1,5 +1,6 @@
 package com.example.cloudtypetest.converter;
 
+import com.example.cloudtypetest.domain.enums.RoomStatus;
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
 import com.example.cloudtypetest.domain.room.RoomUser;
@@ -15,9 +16,17 @@ public class RoomConverter {
 
     // todo : 구현 필요
     public static Room toRoomEntity(RoomReq.CreateRoom createRoomDto, User user) {
-        // 여기서 RoomInfo까지 만들어서 셋팅해서 던져주기
-        // Contest셋팅해주기 contestId로 ㄱ
+        RoomInfo roomInfo = RoomInfo.builder()
+                .roomJobList(createRoomDto.getJobList())
+                .roomTendencyList(createRoomDto.getTendencyList())
+                .maxUserCount(createRoomDto.getMaxUserCount())
+                .build();
+
+        // todo : Contest셋팅해주기 contestId
         return Room.builder()
+                 // .contest()
+                .roomInfo(roomInfo)
+                .roomStatus(RoomStatus.RECRUITING)
                 .headUser(user)
                 .build();
     }
@@ -31,7 +40,6 @@ public class RoomConverter {
 
     public static RoomRes.ApplyRoom toApplyRoomDto(RoomUser roomUser) {
         return RoomRes.ApplyRoom.builder()
-
                 .build();
     }
 
@@ -53,6 +61,24 @@ public class RoomConverter {
     public static RoomRes.ConfirmUser toConfirmUserDto(String confirmStatus) {
         return RoomRes.ConfirmUser.builder()
                 .confirmStatus(confirmStatus)
+                .build();
+    }
+
+    public static RoomRes.UserDto toUserDto(User user) {
+        return RoomRes.UserDto.builder()
+                .job("Developer") // todo : 추후 수정
+                .nickName(user.getNickname())
+                .tendencyList(new ArrayList<>())
+                .build();
+    }
+
+    public static RoomRes.UserListDto toUserListDto(List<User> userList) {
+        List<RoomRes.UserDto> userDtoList = new ArrayList<>();
+        for(User user : userList) {
+            userDtoList.add(RoomConverter.toUserDto(user));
+        }
+        return RoomRes.UserListDto.builder()
+                .userDtoList(userDtoList)
                 .build();
     }
 }

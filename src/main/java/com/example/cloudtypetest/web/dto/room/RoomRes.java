@@ -59,4 +59,22 @@ public class RoomRes {
     public static class RoomInfoDto {
         private String field;
     }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class UserDto {
+        private String nickName;
+        private String job;
+        private List<String> tendencyList;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class UserListDto {
+        List<RoomRes.UserDto> userDtoList;
+    }
 }

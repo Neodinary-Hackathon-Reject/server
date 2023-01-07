@@ -1,9 +1,11 @@
 package com.example.cloudtypetest.domain.room;
 
 import com.example.cloudtypetest.domain.common.BaseEntity;
+import com.example.cloudtypetest.domain.user.Job;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +20,12 @@ public class RoomInfo extends BaseEntity {
     private Long id;
 
     private Integer maxUserCount;
+
+    @Column
+    @ElementCollection
+    private List<String> roomJobList;
+
+    @Column
+    @ElementCollection
+    private List<String> roomTendencyList;
 }
