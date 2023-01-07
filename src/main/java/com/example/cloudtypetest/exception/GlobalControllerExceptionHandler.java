@@ -39,7 +39,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
     @ExceptionHandler
     public ResponseEntity<ApiErrorResult> ConstraintViolationExceptionHandler(ConstraintViolationException e) {
-        String message = "request가 Validate 하지 않습니다. :" + e.getConstraintViolations().getClass().getName();
+        String message = "request가 Valid 하지 않습니다. :" + e.getConstraintViolations().getClass().getName();
         String cause = e.getClass().getName();
         return ResponseEntity.badRequest()
                 .body(ApiErrorResult.builder().message(message).cause(cause).build());
