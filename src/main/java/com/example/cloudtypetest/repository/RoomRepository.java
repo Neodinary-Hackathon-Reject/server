@@ -23,7 +23,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     }
 
 
-    @Query(value = "select room.id'roomId' ,url'imgUrl',contest.tittle'title',concat(YEAR(start_date),'년 ',month(start_date),' 월', day(start_date),' 일 부터',YEAR(finish_date),'년 ',month(finish_date),' 월', day(finish_date),' 일 부터')'date' from contest join room on " +
+    @Query(value = "select room.id'roomId' ,url'imgUrl',contest.tittle'title',concat(YEAR(start_date),'년 ',month(start_date),' 월', day(start_date),' 일 부터 ',YEAR(finish_date),'년 ',month(finish_date),' 월', day(finish_date),' 일 까지')'date' from contest join room on " +
             "room.contest_id=contest.id join room_user on room.id=room_user.room_id where room_user.user_id=:userId", nativeQuery = true)
     List<GetReviewProject> getReviewList(Long userId);
     interface GetReviewProject {
