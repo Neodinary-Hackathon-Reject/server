@@ -1,6 +1,6 @@
 package com.example.cloudtypetest;
 
-import com.example.cloudtypetest.domain.Authority;
+import com.example.cloudtypetest.domain.user.Authority;
 import com.example.cloudtypetest.repository.AuthorityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

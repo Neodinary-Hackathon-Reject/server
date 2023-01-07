@@ -1,7 +1,7 @@
 package com.example.cloudtypetest.service;
 
-import com.example.cloudtypetest.domain.Authority;
-import com.example.cloudtypetest.domain.User;
+import com.example.cloudtypetest.domain.user.Authority;
+import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.jwt.JwtFilter;
 import com.example.cloudtypetest.jwt.TokenProvider;
 import com.example.cloudtypetest.repository.UserRepository;

@@ -1,6 +1,5 @@
-package com.example.cloudtypetest.domain;
+package com.example.cloudtypetest.domain.user;
 
-import com.example.cloudtypetest.domain.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -14,7 +13,7 @@ import javax.persistence.Id;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Contest extends BaseEntity {
+public class Job {
     @Id
     @Column
     @GeneratedValue

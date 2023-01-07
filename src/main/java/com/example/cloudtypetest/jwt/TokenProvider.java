@@ -1,6 +1,6 @@
 package com.example.cloudtypetest.jwt;
 
-import com.example.cloudtypetest.domain.User;
+import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.repository.UserRepository;
 import com.example.cloudtypetest.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;

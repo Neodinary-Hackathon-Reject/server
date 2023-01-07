@@ -1,4 +1,4 @@
-package com.example.cloudtypetest.domain;
+package com.example.cloudtypetest.domain.user;
 
 import lombok.*;
 
