@@ -10,6 +10,7 @@ import com.example.cloudtypetest.web.dto.TokenRes;
 import com.example.cloudtypetest.web.dto.user.UserReq;
 import com.example.cloudtypetest.web.dto.user.UserRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,6 +67,22 @@ public class UserController {
         List<UserRes.GetKeywordRes> getKeywordRes = userService.getKeywordList(keyword);
         return new BaseResponse<>(getKeywordRes);
     }
+
+    @GetMapping("/check/userId")
+    public BaseResponse<String> checkUserId(@Param("userId") String userId){
+        String result="";
+        System.out.println(userService.checkUserId(userId));
+        System.out.println(userId);
+        if(userService.checkUserId(userId)){
+            return new BaseResponse<>(USERS_EXISTS_ID);
+        }
+        else{
+            result="사용 가능합니다.";
+        }
+        return new BaseResponse<>(result);
+
+    }
+
     @GetMapping("/my_page")
     public BaseResponse<String> getMyPage(){
 
