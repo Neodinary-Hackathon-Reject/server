@@ -127,7 +127,7 @@ public class TokenProvider implements InitializingBean {
     @return int
     @throws BaseException
      */
-    public Long getUserIdx(){
+    public Long getUserIdx() {
         //1. JWT 추출
         String accessToken = getJwt();
 
