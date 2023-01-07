@@ -24,4 +24,20 @@ public class ContestRes {
     public static class ContestListDto {
         private List<ContestDto> contestDtoList;
     }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class RoomDto {
+        private String field;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class RoomListDto {
+        private List<ContestRes.RoomDto> roomDtoList;
+    }
 }
