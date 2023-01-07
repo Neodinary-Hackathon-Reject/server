@@ -2,14 +2,14 @@ package com.example.cloudtypetest.service;
 
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponseStatus;
-import com.example.cloudtypetest.domain.user.Authority;
-import com.example.cloudtypetest.domain.user.User;
+import com.example.cloudtypetest.domain.user.*;
 import com.example.cloudtypetest.jwt.JwtFilter;
 import com.example.cloudtypetest.jwt.TokenProvider;
+import com.example.cloudtypetest.repository.JobRepository;
+import com.example.cloudtypetest.repository.KeywordRepository;
+import com.example.cloudtypetest.repository.TendencyRepository;
 import com.example.cloudtypetest.repository.UserRepository;
-import com.example.cloudtypetest.web.dto.LoginUserReq;
-import com.example.cloudtypetest.web.dto.PostUserReq;
-import com.example.cloudtypetest.web.dto.TokenRes;
+import com.example.cloudtypetest.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,8 +18,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JobRepository jobRepository;
+    private final TendencyRepository tenancyRepository;
+    private final KeywordRepository keywordRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -71,24 +77,32 @@ public class UserService {
     public TokenRes signup(PostUserReq postUserReq) throws BaseException {
         // TODO: 아이디 중복확인
 
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")
-                .build();
+            Authority authority = Authority.builder()
+                    .authorityName("ROLE_USER")
+                    .build();
 
-        User user = User.builder()
-                .username(postUserReq.getUsername())
-                .password(passwordEncoder.encode(postUserReq.getPassword()))
-                .name(postUserReq.getName())
-                .nickname(postUserReq.getNickname())
-                .phone(postUserReq.getPhone())
-                .authorities(Collections.singleton(authority))
-                .activated(true)
-                .build();
+            Job job = jobRepository.getOne(postUserReq.getJob());
 
-        Long userId=userRepository.save(user).getId();
-        String jwt=tokenProvider.createToken(userId);
 
-        return new TokenRes(userId,jwt);
+            User user = User.builder()
+                    .username(postUserReq.getUsername())
+                    .password(passwordEncoder.encode(postUserReq.getPassword()))
+                    .nickname(postUserReq.getNickname())
+                    .job(job)
+                    .region(postUserReq.getRegion())
+                    .place(postUserReq.getPlace())
+                    .introduce(postUserReq.getPlace())
+                    .portfolio(postUserReq.getPortfolio())
+                    .authorities(Collections.singleton(authority))
+                    .activated(true)
+                    .build();
+
+            Long userId = userRepository.save(user).getId();
+
+            String jwt = tokenProvider.createToken(userId);
+
+            return new TokenRes(userId, jwt);
+
     }
 
     public boolean checkNickName(String nickName) {
@@ -99,4 +113,31 @@ public class UserService {
         return userRepository.existsByUsername(userId);
     }
 
+    public User findUserById(Long userId){
+        return userRepository.getOne(userId);
+    }
+
+    public void postKeyword(User user, List<KeywordList> keywordList) {
+
+        for (KeywordList list : keywordList) {
+
+            Keyword keyword = Keyword.builder()
+                    .content(list.getContent())
+                    .user(user)
+                    .build();
+            keywordRepository.save(keyword);
+        }
+    }
+
+    public void postTendency(User user, List<TendencyList> tendencyList) {
+        for (TendencyList list : tendencyList) {
+            Tendency tendency = Tendency.builder()
+                    .content(list.getTendency())
+                    .user(user)
+                    .build();
+            tenancyRepository.save(tendency);
+        }
+
+
+    }
 }

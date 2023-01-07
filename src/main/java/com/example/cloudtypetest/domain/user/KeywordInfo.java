@@ -10,13 +10,12 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Job {
+public class KeywordInfo {
     @Id
     @Column
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(name="job_name")
-    private String jobName;
-
+    @Column(name="content")
+    private String content;
 }
