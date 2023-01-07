@@ -1,5 +1,7 @@
 package com.example.cloudtypetest.service.room;
 
+import com.example.cloudtypetest.base.BaseException;
+import com.example.cloudtypetest.base.BaseResponseStatus;
 import com.example.cloudtypetest.converter.RoomConverter;
 import com.example.cloudtypetest.domain.Contest;
 import com.example.cloudtypetest.domain.enums.RoomRequestStatus;
@@ -13,10 +15,12 @@ import com.example.cloudtypetest.repository.RoomUserRepository;
 import com.example.cloudtypetest.repository.UserRepository;
 import com.example.cloudtypetest.web.dto.room.RoomReq;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -44,43 +48,57 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public RoomUser applyRoom(User user, Long roomId) {
-        Room room = roomRepository.findById(roomId).get(); // todo : 추후 존재하지 않는 방의 경우 예외처리
-        RoomUser roomUser = RoomUser.builder()
-                .user(user)
-                .room(room)
-                .roomRequestStatus(RoomRequestStatus.PENDING)
-                .build();
-        RoomUser createdRoomUser = roomUserRepository.save(roomUser);
-        return createdRoomUser;
+    public RoomUser applyRoom(User user, Long roomId) throws BaseException {
+        Optional<Room> optionalRoom = roomRepository.findById(roomId);
+        if(optionalRoom.isPresent()) {
+            RoomUser roomUser = RoomUser.builder()
+                    .user(user)
+                    .room(optionalRoom.get())
+                    .roomRequestStatus(RoomRequestStatus.PENDING)
+                    .build();
+            RoomUser createdRoomUser = roomUserRepository.save(roomUser);
+            return createdRoomUser;
+        }
+        throw new BaseException(BaseResponseStatus.NOT_EXIST_ROOM);
     }
 
 
-    public List<RoomUser> getPendingRoomUserList(User headUser, Long roomId) {
-        Room room = roomRepository.findById(roomId).get();
-        List<RoomUser> roomUserList = roomUserRepository.findByRoomAndRoomRequestStatus(room, RoomRequestStatus.PENDING);
-        return roomUserList;
+    public List<RoomUser> getPendingRoomUserList(User headUser, Long roomId) throws BaseException  {
+        Optional<Room> optionalRoom = roomRepository.findById(roomId);
+        if(optionalRoom.isPresent()) {
+            List<RoomUser> roomUserList = roomUserRepository.findByRoomAndRoomRequestStatus(optionalRoom.get(), RoomRequestStatus.PENDING);
+            return roomUserList;
+        }
+        throw new BaseException(BaseResponseStatus.NOT_EXIST_ROOM);
     }
 
     @Transactional
-    public String confirmRequest(User headUser, RoomReq.ConfirmUser confirmUserDto) {
+    public String confirmRequest(User headUser, RoomReq.ConfirmUser confirmUserDto) throws BaseException {
         // todo : 헤드 유저의 권한인지 체크 필요, 나중으로 미루기
-        Room room = roomRepository.findById(confirmUserDto.getRoomId()).get();
-        User user = userRepository.findById(confirmUserDto.getUserId()).get();
+        Optional<Room> OptionalRoom = roomRepository.findById(confirmUserDto.getRoomId());
+        Optional<User> OptionalUser = userRepository.findById(confirmUserDto.getUserId());
 
-        RoomUser roomUser = roomUserRepository.findByRoomAndUser(room, user).get();
-        if(confirmUserDto.getAcceptStatus().equals("ACCEPT")) { // 나중에 enum으로 리팩토링
-            roomUser.setRoomRequestStatus(RoomRequestStatus.ACCEPT);
-            return "ACCEPT";
+        if(OptionalRoom.isPresent() && OptionalUser.isPresent()) {
+            Optional<RoomUser> OptionalRoomUser = roomUserRepository.findByRoomAndUser(OptionalRoom.get(), OptionalUser.get());
+            if(OptionalRoomUser.isPresent()) {
+                if(confirmUserDto.getAcceptStatus().equals("ACCEPT")) { // 나중에 enum으로 리팩토링
+                    OptionalRoomUser.get().setRoomRequestStatus(RoomRequestStatus.ACCEPT);
+                    return "ACCEPT";
+                }
+                roomUserRepository.delete(OptionalRoomUser.get());
+                return "REJECT";
+            }
+            throw new BaseException(BaseResponseStatus.NOT_EXIST_USER);
         }
-        roomUserRepository.delete(roomUser);
-        return "REJECT";
+        throw new BaseException(BaseResponseStatus.NOT_EXIST_ROOM);
     }
 
     @Override
-    public List<Room> findByContest(Long contestId) {
-        Contest contest = contestRepository.findById(contestId).get();
-        return roomRepository.findByContest(contest);
+    public List<Room> findByContest(Long contestId) throws BaseException {
+        Optional<Contest> optionalContest = contestRepository.findById(contestId);
+        if(optionalContest.isPresent())
+            return roomRepository.findByContest(optionalContest.get());
+        throw new BaseException(BaseResponseStatus.NOT_EXIST_CONTEST);
     }
 
 }

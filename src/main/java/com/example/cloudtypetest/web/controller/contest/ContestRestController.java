@@ -1,5 +1,6 @@
 package com.example.cloudtypetest.web.controller.contest;
 
+import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponse;
 import com.example.cloudtypetest.converter.ContestConverter;
 import com.example.cloudtypetest.domain.Contest;
@@ -31,7 +32,11 @@ public class ContestRestController {
 
     @GetMapping("/{contestId}")
     public BaseResponse<ContestRes.RoomListDto> getRooms(@PathVariable(value = "contestId")Long contestId) {
-        List<Room> roomList = roomService.findByContest(contestId);
-        return new BaseResponse<>(ContestConverter.toRoomListDto(roomList));
+        try {
+            List<Room> roomList = roomService.findByContest(contestId);
+            return new BaseResponse<>(ContestConverter.toRoomListDto(roomList));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 }
