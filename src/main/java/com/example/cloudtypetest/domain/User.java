@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 @Getter
 @Setter
 @Builder
@@ -57,8 +57,9 @@ public class User {
     private LocalDateTime updatedAt;
 
 
-
-
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
 
 
     @ManyToMany
