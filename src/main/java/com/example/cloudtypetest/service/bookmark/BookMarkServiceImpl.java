@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,8 +22,16 @@ public class BookMarkServiceImpl implements BookMarkService{
     private final BookMarkRepository bookMarkRepository;
     private final UserRepository userRepository;
 
+    @Override
+    public List<User> findByFrom(User loginUser) {
+        List<BookMark> bookMarkList = bookMarkRepository.findByFrom(loginUser);
+        return bookMarkList.stream().
+                map(bookMark -> userRepository.findById(bookMark.getTo().getId()).get())
+                .collect(Collectors.toList());
+    }
+
     @Transactional
-    public BookMark bookmark(User loginUser, Long userId) throws BaseException{
+    public BookMark bookmark(User loginUser, Long userId) throws BaseException {
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()) {
             BookMark bookMark = BookMark.builder()
@@ -31,6 +41,6 @@ public class BookMarkServiceImpl implements BookMarkService{
             BookMark createdBookMark = bookMarkRepository.save(bookMark);
             return createdBookMark;
         }
-        return throw BaseException(BaseResponseStatus.NOT_EXIST_USER);
+        throw new BaseException(BaseResponseStatus.NOT_EXIST_USER);
     }
 }

@@ -10,9 +10,12 @@ import com.example.cloudtypetest.service.bookmark.BookMarkService;
 import com.example.cloudtypetest.util.UserGetter;
 import com.example.cloudtypetest.web.dto.bookmark.BookMarkRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,5 +36,10 @@ public class BookMarkRestController {
         }
     }
 
-    
+    @GetMapping("/bookmark")
+    public BaseResponse<BookMarkRes.BookMarkingUserListDto> bookMarkingUser() {
+        User loginUser = userGetter.getUserById(tokenProvider.getUserIdx());
+        List<User> toList = bookMarkService.findByFrom(loginUser);
+        return new BaseResponse<>(BookMarkConverter.toBookMarkingUserListDto(toList));
+    }
 }
