@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class UserRes {
 
     @Getter
@@ -20,5 +22,23 @@ public class UserRes {
     @AllArgsConstructor
     public class GetKeywordRes {
         private String ab;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class MateListDto {
+        private List<MateDto> mateList;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class MateDto {
+        private String name;
+        private String job;
+        // 화면 나오면 추가..
     }
 }
