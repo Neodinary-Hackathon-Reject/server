@@ -12,6 +12,7 @@ public class UserConverter {
     public static UserRes.MateDto toMateDto(User user) {
         return UserRes.MateDto.builder()
                 .userId(user.getId())
+                .profileImageUrl(user.getProfileImageUrl())
                 .nickName(user.getNickname())
                 .address(user.getRegion())
                 .tendencyList(user.getUserTendencyList())
@@ -46,6 +47,7 @@ public class UserConverter {
                 nickname(user.getNickname()).
                 region(user.getRegion()).
                 keywordList(user.getUserKeywordList()).
+                profileImageUrl(user.getProfileImageUrl()).
                 portfolio(user.getPortfolio()).build();
     }
 

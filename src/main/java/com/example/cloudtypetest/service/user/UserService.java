@@ -81,7 +81,25 @@ public class UserService {
         return new TokenRes(userId,jwt);
     }
 
+    private String getRandomProfileImageUrl() {
+        List<String> urlList = List.of(
+                "https://www.beginmate.com/Upload/Mate/d678fcb4-9975-42f1-b2b5-3d2e45eb2655_ThumbSmall.png",
+                "https://www.beginmate.com/Upload/Mate/9f333db9-2c4a-4cee-b8e2-13920defecfe_ThumbSmall.png",
+                "https://www.beginmate.com/Upload/Mate/BodyPart_92394af9-9eb0-4f87-a5a9-a0f5892f1355_ThumbSmall.png",
+                "https://www.beginmate.com/Upload/Mate/c8db3de1-032d-4cfd-92ab-e4bc7649cd16_ThumbSmall.png",
+                "https://www.beginmate.com/Upload/Mate/BodyPart_915053ff-a6ce-4a4d-975c-f66c21336342_ThumbSmall.png",
+                "https://www.beginmate.com/Upload/Mate/e4dc6374-94f3-4ebf-aec4-492006ad0afd_ThumbSmall.png",
+                "https://www.beginmate.com/Upload/Mate/78ed3f60-1e63-4821-bcef-cc5ad84ff21c_ThumbSmall.png",
+                "https://www.beginmate.com/Upload/Mate/359b547f-214d-4fe4-8e0f-344767200552_ThumbSmall.png"
+        );
+        Random random = new Random();
+        int randomIndex = random.nextInt(urlList.size());
+        return urlList.get(randomIndex);
+    }
+
     public TokenRes signup(PostUserReq postUserReq) throws BaseException {
+
+
             Authority authority = Authority.builder()
                     .authorityName("ROLE_USER")
                     .build();
@@ -91,6 +109,7 @@ public class UserService {
 
             User user = User.builder()
                     .username(postUserReq.getUsername())
+                    .profileImageUrl(getRandomProfileImageUrl())
                     .password(passwordEncoder.encode(postUserReq.getPassword()))
                     .nickname(postUserReq.getNickname())
                     .job(job)

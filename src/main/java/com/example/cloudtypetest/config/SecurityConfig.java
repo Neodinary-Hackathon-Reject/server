@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers(
                         "/h2-console/**"
-                        ,"/favicon.ico"
+                        ,"/favicon.ico", "/users", "/contests"
                 );
     }
 

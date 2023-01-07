@@ -42,6 +42,7 @@ public class RoomRes {
     @Builder
     public static class RequestUser {
         private Long userId;
+        private String profileImageUrl;
         private String nickName;
         private String contestName;
     }
@@ -68,6 +69,7 @@ public class RoomRes {
     @Builder
     public static class UserDto {
         private Long userId;
+        private String profileImageUrl;
         private String nickName;
         private String job;
         private List<String> tendencyList;

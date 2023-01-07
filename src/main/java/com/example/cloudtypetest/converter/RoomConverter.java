@@ -48,6 +48,7 @@ public class RoomConverter {
     public static RoomRes.RequestUser toRequestUserDto(RoomUser roomUser) {
         return RoomRes.RequestUser.builder()
                 .userId(roomUser.getUser().getId())
+                .profileImageUrl(roomUser.getUser().getProfileImageUrl())
                 .nickName(roomUser.getUser().getNickname())
                 .contestName(roomUser.getRoom().getContest().getTitle())
                 .build();
@@ -72,6 +73,7 @@ public class RoomConverter {
     public static RoomRes.UserDto toUserDto(User user) {
         return RoomRes.UserDto.builder()
                 .userId(user.getId())
+                .profileImageUrl(user.getProfileImageUrl())
                 .job(user.getJob().getJobName())
                 .nickName(user.getNickname())
                 .tendencyList(user.getUserTendencyList())

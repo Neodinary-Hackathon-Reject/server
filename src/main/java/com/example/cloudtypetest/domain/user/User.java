@@ -29,6 +29,8 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
+    private String profileImageUrl;
+
     //username == userId
     //여러가지 시도해보다가 오류나서 일단은 username상태로 뒀습니다ㅠㅠ
     //테스트용 주석  (민기)
