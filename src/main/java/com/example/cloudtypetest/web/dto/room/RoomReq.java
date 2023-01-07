@@ -11,6 +11,6 @@ public class RoomReq {
     @AllArgsConstructor
     @Builder
     public static class CreateRoom {
-        private String field;
+        private Long ContestId;
     }
 }

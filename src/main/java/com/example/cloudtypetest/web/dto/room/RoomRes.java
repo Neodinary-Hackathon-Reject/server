@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class RoomRes {
@@ -13,7 +14,8 @@ public class RoomRes {
     @AllArgsConstructor
     @Builder
     public static class CreateRoom {
-        private String field;
+        private Long createdRoomId;
+        private LocalDateTime createdAt;
     }
 
     @NoArgsConstructor

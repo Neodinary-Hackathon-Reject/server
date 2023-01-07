@@ -16,8 +16,4 @@ public class RoomInfo extends BaseEntity {
     @Column
     @GeneratedValue
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
 }

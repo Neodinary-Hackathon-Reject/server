@@ -50,10 +50,6 @@ public class User extends BaseEntity {
     @Column(name="phone")
     private String phone;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
-
     @OneToOne
     @JoinColumn(name = "job_id")
     private Job job;
