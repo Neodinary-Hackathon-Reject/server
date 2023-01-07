@@ -4,6 +4,7 @@ import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponse;
 import com.example.cloudtypetest.converter.UserConverter;
 import com.example.cloudtypetest.domain.user.User;
+import com.example.cloudtypetest.jwt.TokenProvider;
 import com.example.cloudtypetest.service.user.UserService;
 import com.example.cloudtypetest.web.dto.LoginUserReq;
 import com.example.cloudtypetest.web.dto.PostUserReq;
@@ -23,6 +24,7 @@ import static com.example.cloudtypetest.base.BaseResponseStatus.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final TokenProvider tokenProvider;
 
     @GetMapping("")
     public BaseResponse<UserRes.MateListDto> getMate() {
@@ -95,9 +97,15 @@ public class UserController {
     }
 
     @GetMapping("/my_page")
-    public BaseResponse<String> getMyPage(){
+    public BaseResponse<UserRes.MateDetailDto> getMyPage(){
+        Long userId=tokenProvider.getUserIdx();
+        UserRes.UserDetailDto userDetailDto=userService.getUserDetail(userId);
+        UserRes.ReviewDetailDto reviewDetailDto=userService.getReviewDetail(userId);
+        String completeProject=userService.getCompleteProject(userId);
 
-        return null;
+        UserRes.MateDetailDto metaDetailDto=UserConverter.toMateDetailListDto(userDetailDto,reviewDetailDto, completeProject);
+
+        return new BaseResponse<>(metaDetailDto);
     }
 
     @GetMapping("/my_room")
@@ -115,13 +123,21 @@ public class UserController {
     public BaseResponse<UserRes.MateDetailDto> getUserMateDetail(@PathVariable("userId")Long userId){
         UserRes.UserDetailDto userDetailDto=userService.getUserDetail(userId);
         UserRes.ReviewDetailDto reviewDetailDto=userService.getReviewDetail(userId);
+        String completeProject=userService.getCompleteProject(userId);
 
-        UserRes.MateDetailDto metaDetailDto=UserConverter.toMateDetailListDto(userDetailDto,reviewDetailDto);
+        UserRes.MateDetailDto metaDetailDto=UserConverter.toMateDetailListDto(userDetailDto,reviewDetailDto,completeProject);
 
         return new BaseResponse<>(metaDetailDto);
     }
 
+    /*
+    @GetMapping("/review")
+    public BaseResponse<UserRes.ReviewListDto> getReviewList(){
 
+    }
+
+
+     */
 
 
 }

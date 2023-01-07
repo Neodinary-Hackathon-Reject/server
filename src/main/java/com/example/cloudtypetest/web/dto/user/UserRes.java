@@ -81,6 +81,23 @@ public class UserRes {
         private String portfolio;
         private List<String> keywordList;
         private List<String> feedBackList;
+        private String completeProject;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewListDto {
+        private String title;
+        private String date;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class Project{
+        private String completeProject;
+    }
 }

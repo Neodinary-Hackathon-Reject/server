@@ -1,6 +1,5 @@
 package com.example.cloudtypetest.converter;
 
-import com.example.cloudtypetest.domain.user.Review;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.web.dto.user.UserRes;
 
@@ -30,7 +29,7 @@ public class UserConverter {
                 .build();
     }
 
-    public static UserRes.MateDetailDto toMateDetailListDto(UserRes.UserDetailDto userDetailDto, UserRes.ReviewDetailDto reviewDetailDto) {
+    public static UserRes.MateDetailDto toMateDetailListDto(UserRes.UserDetailDto userDetailDto, UserRes.ReviewDetailDto reviewDetailDto, String completeProject) {
         return UserRes.MateDetailDto.builder().userId(userDetailDto.getUserId())
                 .nickname(userDetailDto.getNickname())
                 .region(userDetailDto.getRegion())
@@ -38,6 +37,7 @@ public class UserConverter {
                 .portfolio(userDetailDto.getPortfolio())
                 .keywordList(userDetailDto.getKeywordList())
                 .feedBackList(reviewDetailDto.getFeedBackList())
+                .completeProject(completeProject)
                 .build();
     }
 

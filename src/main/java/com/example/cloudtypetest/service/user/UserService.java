@@ -54,14 +54,13 @@ public class UserService {
         }
 
 
-        User user=userRepository.findByUsername(loginUserReq.getUsername());
+        User user = userRepository.findByUsername(loginUserReq.getUsername());
         Long userId = user.getId();
 
 
-        if(!passwordEncoder.matches(loginUserReq.getPassword(),user.getPassword())){
+        if (!passwordEncoder.matches(loginUserReq.getPassword(), user.getPassword())) {
             throw new BaseException(BaseResponseStatus.NOT_CORRECT_PASSWORD);
         }
-
 
 
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -78,7 +77,7 @@ public class UserService {
 
 
         //반환 값 아이디 추가
-        return new TokenRes(userId,jwt);
+        return new TokenRes(userId, jwt);
     }
 
     private String getRandomProfileImageUrl() {
@@ -98,36 +97,35 @@ public class UserService {
     }
 
     public TokenRes signup(PostUserReq postUserReq) throws BaseException {
+        // TODO: 아이디 중복확인
+
+        Authority authority = Authority.builder()
+                .authorityName("ROLE_USER")
+                .build();
+
+        Job job = jobRepository.getOne(postUserReq.getJob());
 
 
-            Authority authority = Authority.builder()
-                    .authorityName("ROLE_USER")
-                    .build();
+        User user = User.builder()
+                .username(postUserReq.getUsername())
+                .password(passwordEncoder.encode(postUserReq.getPassword()))
+                .nickname(postUserReq.getNickname())
+                .job(job)
+                .region(postUserReq.getRegion())
+                .place(postUserReq.getPlace())
+                .introduce(postUserReq.getPlace())
+                .portfolio(postUserReq.getPortfolio())
+                .userKeywordList(postUserReq.getKeywordList())
+                .userTendencyList(postUserReq.getTendencyList())
+                .authorities(Collections.singleton(authority))
+                .activated(true)
+                .build();
 
-            Job job = jobRepository.getOne(postUserReq.getJob());
+        Long userId = userRepository.save(user).getId();
 
+        String jwt = tokenProvider.createToken(userId);
 
-            User user = User.builder()
-                    .username(postUserReq.getUsername())
-                    .profileImageUrl(getRandomProfileImageUrl())
-                    .password(passwordEncoder.encode(postUserReq.getPassword()))
-                    .nickname(postUserReq.getNickname())
-                    .job(job)
-                    .region(postUserReq.getRegion())
-                    .place(postUserReq.getPlace())
-                    .introduce(postUserReq.getPlace())
-                    .portfolio(postUserReq.getPortfolio())
-                    .userKeywordList(postUserReq.getKeywordList())
-                    .userTendencyList(postUserReq.getTendencyList())
-                    .authorities(Collections.singleton(authority))
-                    .activated(true)
-                    .build();
-
-            Long userId = userRepository.save(user).getId();
-
-            String jwt = tokenProvider.createToken(userId);
-
-            return new TokenRes(userId, jwt);
+        return new TokenRes(userId, jwt);
 
     }
 
@@ -139,11 +137,9 @@ public class UserService {
         return userRepository.existsByUsername(userId);
     }
 
-    public User findUserById(Long userId){
+    public User findUserById(Long userId) {
         return userRepository.getOne(userId);
     }
-
-
 
 
     public List<UserRes.GetKeywordRes> getKeywordList(String keyword) {
@@ -158,7 +154,7 @@ public class UserService {
     public List<User> findByRoomAndRoomRequestStatus(Long roomId, RoomRequestStatus accept) throws BaseException {
 
         Optional<Room> optionalRoom = roomRepository.findById(roomId);
-        if(optionalRoom.isPresent()) {
+        if (optionalRoom.isPresent()) {
             List<RoomUser> roomUserList = roomUserRepository.findByRoomAndRoomRequestStatus(optionalRoom.get(), RoomRequestStatus.ACCEPT);
             List<User> userList = roomUserList.stream()
                     .map(roomUser -> userRepository.findById(roomUser.getUser().getId()).get())
@@ -169,7 +165,7 @@ public class UserService {
     }
 
     public UserRes.UserDetailDto getUserDetail(Long userId) {
-        User user=userRepository.getOne(userId);
+        User user = userRepository.getOne(userId);
         return UserConverter.toUserDetailDto(user);
 
     }
@@ -178,18 +174,17 @@ public class UserService {
     public UserRes.ReviewDetailDto getReviewDetail(Long userId) {
 
         User user = userGetter.getUserById(userId);
-        List<Review> reviewList=reviewRepository.findByTargetUser(user);
-        List<String> resultList=new ArrayList<>();
+        List<Review> reviewList = reviewRepository.findByTargetUser(user);
+        List<String> resultList = new ArrayList<>();
 
 
-        UserRes.ReviewDetailDto reviewDetailDto=null;
-        if(reviewList.size()==0) {
+        UserRes.ReviewDetailDto reviewDetailDto = null;
+        if (reviewList.size() == 0) {
             for (Review review : reviewList) {
                 resultList.addAll(review.getFeedBackList());
             }
             reviewDetailDto = new UserRes.ReviewDetailDto(null, resultList);
-        }
-        else {
+        } else {
             for (Review review : reviewList) {
                 resultList.addAll(review.getFeedBackList());
             }
@@ -197,7 +192,30 @@ public class UserService {
         }
 
 
-
         return UserConverter.toMateDetailDto(reviewDetailDto);
+    }
+
+    public String getCompleteProject(Long userId) {
+        try {
+            List<RoomRepository.GetCompleteProject> projectResult = roomRepository.getCompleteProject(userId);
+            List<UserRes.Project> project = new ArrayList<>();
+
+
+                projectResult.forEach(
+                        result -> {
+                            project.add(
+                                    new UserRes.Project(
+                                            result.getCompleteProject()
+                                    )
+                            );
+                        }
+
+                );
+                return project.get(0).getCompleteProject();
+
+
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 }
