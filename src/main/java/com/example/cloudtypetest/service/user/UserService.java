@@ -2,6 +2,7 @@ package com.example.cloudtypetest.service.user;
 
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponseStatus;
+import com.example.cloudtypetest.converter.UserConverter;
 import com.example.cloudtypetest.domain.enums.RoomRequestStatus;
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomUser;
@@ -9,6 +10,7 @@ import com.example.cloudtypetest.domain.user.*;
 import com.example.cloudtypetest.jwt.JwtFilter;
 import com.example.cloudtypetest.jwt.TokenProvider;
 import com.example.cloudtypetest.repository.*;
+import com.example.cloudtypetest.util.UserGetter;
 import com.example.cloudtypetest.web.dto.*;
 import com.example.cloudtypetest.web.dto.user.UserRes;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -33,11 +34,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JobRepository jobRepository;
-    private final TendencyRepository tenancyRepository;
-    private final KeywordRepository keywordRepository;
     private final KeywordInfoRepository keywordInfoRepository;
+    private final ReviewRepository reviewRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserGetter  userGetter;
 
     private final RoomRepository roomRepository;
 
@@ -127,29 +128,8 @@ public class UserService {
         return userRepository.getOne(userId);
     }
 
-    public void postKeyword(User user, List<KeywordList> keywordList) {
-
-        for (KeywordList list : keywordList) {
-
-            Keyword keyword = Keyword.builder()
-                    .content(list.getKeyword())
-                    .user(user)
-                    .build();
-            keywordRepository.save(keyword);
-        }
-    }
-
-    public void postTendency(User user, List<TendencyList> tendencyList) {
-        for (TendencyList list : tendencyList) {
-            Tendency tendency = Tendency.builder()
-                    .content(list.getTendency())
-                    .user(user)
-                    .build();
-            tenancyRepository.save(tendency);
-        }
 
 
-    }
 
     public List<UserRes.GetKeywordRes> getKeywordList(String keyword) {
         List<KeywordInfoRepository.GetKeywordList> keywordInfoResult = keywordInfoRepository.findByContentContains(keyword);
@@ -171,5 +151,38 @@ public class UserService {
             return userList;
         }
         throw new BaseException(BaseResponseStatus.NOT_EXIST_ROOM);
+    }
+
+    public UserRes.UserDetailDto getUserDetail(Long userId) {
+        User user=userRepository.getOne(userId);
+        return UserConverter.toUserDetailDto(user);
+
+    }
+
+
+    public UserRes.ReviewDetailDto getReviewDetail(Long userId) {
+
+        User user = userGetter.getUserById(userId);
+        List<Review> reviewList=reviewRepository.findByTargetUser(user);
+        List<String> resultList=new ArrayList<>();
+
+
+        UserRes.ReviewDetailDto reviewDetailDto=null;
+        if(reviewList.size()==0) {
+            for (Review review : reviewList) {
+                resultList.addAll(review.getFeedBackList());
+            }
+            reviewDetailDto = new UserRes.ReviewDetailDto(null, resultList);
+        }
+        else {
+            for (Review review : reviewList) {
+                resultList.addAll(review.getFeedBackList());
+            }
+            reviewDetailDto = new UserRes.ReviewDetailDto(reviewList.get(0).getReview(), resultList);
+        }
+
+
+
+        return UserConverter.toMateDetailDto(reviewDetailDto);
     }
 }

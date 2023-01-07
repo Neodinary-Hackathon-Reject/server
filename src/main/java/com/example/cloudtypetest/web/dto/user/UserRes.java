@@ -45,4 +45,39 @@ public class UserRes {
         private List<String> tendencyList;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class UserDetailDto{
+        private Long userId;
+        private String nickname;
+        private String region;
+        private String portfolio;
+        private List<String> keywordList;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewDetailDto {
+        private String review;
+        private List<String> feedBackList;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class MateDetailDto {
+        private Long userId;
+        private String nickname;
+        private String region;
+        private String review;
+        private String portfolio;
+        private List<String> keywordList;
+        private List<String> feedBackList;
+    }
+
 }

@@ -53,9 +53,7 @@ public class UserController {
             if (userService.checkUserId(postUserReq.getUsername())) {
                 return new BaseResponse<>(USERS_EXISTS_ID);
             }
-            if (userService.checkNickName(postUserReq.getNickname())) {
-                return new BaseResponse<>(USERS_EXISTS_NICKNAME);
-            }
+
             System.out.println(postUserReq.getTendencyList());
             TokenRes tokenRes = userService.signup(postUserReq);
 
@@ -111,6 +109,16 @@ public class UserController {
     public BaseResponse<String> patchUserInfo(@RequestBody UserReq.PatchUserReq patchUserReq){
 
         return null;
+    }
+
+    @GetMapping("/detail/{userId}")
+    public BaseResponse<UserRes.MateDetailDto> getUserMateDetail(@PathVariable("userId")Long userId){
+        UserRes.UserDetailDto userDetailDto=userService.getUserDetail(userId);
+        UserRes.ReviewDetailDto reviewDetailDto=userService.getReviewDetail(userId);
+
+        UserRes.MateDetailDto metaDetailDto=UserConverter.toMateDetailListDto(userDetailDto,reviewDetailDto);
+
+        return new BaseResponse<>(metaDetailDto);
     }
 
 
