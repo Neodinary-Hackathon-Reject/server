@@ -18,7 +18,8 @@ public class UserRes {
     @Getter
     @Setter
     @AllArgsConstructor
-    public class GetKeywordRes {
-        private String ab;
+    @Builder
+    public static class GetKeywordRes {
+        private String keyword;
     }
 }
