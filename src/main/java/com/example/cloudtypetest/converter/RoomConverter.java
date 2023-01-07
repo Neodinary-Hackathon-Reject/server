@@ -6,14 +6,32 @@ import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
 import com.example.cloudtypetest.domain.room.RoomUser;
 import com.example.cloudtypetest.domain.user.User;
+import com.example.cloudtypetest.repository.RoomInfoRepository;
 import com.example.cloudtypetest.web.dto.room.RoomReq;
 import com.example.cloudtypetest.web.dto.room.RoomRes;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class RoomConverter {
+
+    @Autowired
+    private RoomInfoRepository roomInfoRepository;
+
+    public static RoomInfoRepository staticRoomInfoRepository;
+
+    @PostConstruct
+    public void setRoomInfoRepository() {
+        staticRoomInfoRepository = this.roomInfoRepository;
+    }
+
 
     public static Room toRoomEntity(RoomReq.CreateRoom createRoomDto, User user, Contest contest) {
         RoomInfo roomInfo = RoomInfo.builder()
@@ -21,10 +39,10 @@ public class RoomConverter {
                 .roomTendencyList(createRoomDto.getTendencyList())
                 .maxUserCount(createRoomDto.getMaxUserCount())
                 .build();
-
+        RoomInfo createdRoomInfo = staticRoomInfoRepository.save(roomInfo);
         return Room.builder()
                 .contest(contest)
-                .roomInfo(roomInfo)
+                .roomInfo(createdRoomInfo)
                 .roomStatus(RoomStatus.RECRUITING)
                 .headUser(user)
                 .build();

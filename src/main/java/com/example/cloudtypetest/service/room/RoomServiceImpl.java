@@ -105,6 +105,7 @@ public class RoomServiceImpl implements RoomService {
         Optional<Contest> optionalContest = contestRepository.findById(contestId);
         if(optionalContest.isPresent()) {
             List<Room> roomList = roomRepository.findByContest(optionalContest.get());
+
             for(Room room : roomList) {
                 long currentUserCount = roomUserRepository.findByRoomAndRoomRequestStatus(room, RoomRequestStatus.ACCEPT).size();
                 Integer currentUserCountBoxing = Integer.valueOf((int)currentUserCount);
@@ -113,6 +114,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setRoomStatus(RoomStatus.COMPLETE);
                 }
             }
+
             return roomList;
         }
         throw new BaseException(BaseResponseStatus.NOT_EXIST_CONTEST);
