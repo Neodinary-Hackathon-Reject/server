@@ -86,7 +86,7 @@ public class RoomServiceImpl implements RoomService {
         if(OptionalRoom.isPresent() && OptionalUser.isPresent()) {
             Optional<RoomUser> OptionalRoomUser = roomUserRepository.findByRoomAndUser(OptionalRoom.get(), OptionalUser.get());
             if(OptionalRoomUser.isPresent()) {
-                if(confirmUserDto.getAcceptStatus().equals("ACCEPT")) { // 나중에 enum으로 리팩토링
+                if(confirmUserDto.getAcceptStatus().equals("ACCEPT")) { // todo : 나중에 enum으로 리팩토링
                     OptionalRoomUser.get().setRoomRequestStatus(RoomRequestStatus.ACCEPT);
                     return "ACCEPT";
                 }

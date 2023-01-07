@@ -14,7 +14,8 @@ public class ContestRes {
     @AllArgsConstructor
     @Builder
     public static class ContestDto {
-        private String field;
+        private Long contestId;
+        private String imgUrl;
     }
 
     @NoArgsConstructor

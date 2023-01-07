@@ -11,6 +11,8 @@ public class ContestConverter {
 
     public static ContestRes.ContestDto toContestDto(Contest contest) {
         return ContestRes.ContestDto.builder()
+                .contestId(contest.getId())
+                .imgUrl(contest.getUrl())
                 .build();
     }
 
