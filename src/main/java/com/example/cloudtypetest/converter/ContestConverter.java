@@ -11,6 +11,8 @@ public class ContestConverter {
 
     public static ContestRes.ContestDto toContestDto(Contest contest) {
         return ContestRes.ContestDto.builder()
+                .contestId(contest.getId())
+                .imgUrl(contest.getUrl())
                 .build();
     }
 
@@ -27,7 +29,7 @@ public class ContestConverter {
     public static ContestRes.RoomDto toRoomDto(Room room) {
         return ContestRes.RoomDto.builder()
                 .roomId(room.getId())
-                .currentUserCount(3) // todo : 조회해서 셋팅해주는 로직 넣기
+                .currentUserCount(room.getRoomInfo().getCurrentUserCount())
                 .maxUserCount(room.getRoomInfo().getMaxUserCount())
                 .tendencyList(room.getRoomInfo().getRoomTendencyList())
                 .jobList(room.getRoomInfo().getRoomJobList())

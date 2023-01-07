@@ -49,8 +49,6 @@ public class UserService {
     }
 
     public TokenRes login(LoginUserReq loginUserReq) throws BaseException {
-        // TODO: 여기서 아이디 찾기로 회원 유무 확인
-
         if(!checkUserId(loginUserReq.getUsername())){
             throw new BaseException(BaseResponseStatus.NOT_EXIST_USER);
         }
@@ -84,8 +82,6 @@ public class UserService {
     }
 
     public TokenRes signup(PostUserReq postUserReq) throws BaseException {
-        // TODO: 아이디 중복확인
-
             Authority authority = Authority.builder()
                     .authorityName("ROLE_USER")
                     .build();

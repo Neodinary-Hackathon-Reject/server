@@ -1,5 +1,6 @@
 package com.example.cloudtypetest.converter;
 
+import com.example.cloudtypetest.domain.Contest;
 import com.example.cloudtypetest.domain.enums.RoomStatus;
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
@@ -14,17 +15,15 @@ import java.util.List;
 
 public class RoomConverter {
 
-    // todo : 구현 필요
-    public static Room toRoomEntity(RoomReq.CreateRoom createRoomDto, User user) {
+    public static Room toRoomEntity(RoomReq.CreateRoom createRoomDto, User user, Contest contest) {
         RoomInfo roomInfo = RoomInfo.builder()
                 .roomJobList(createRoomDto.getJobList())
                 .roomTendencyList(createRoomDto.getTendencyList())
                 .maxUserCount(createRoomDto.getMaxUserCount())
                 .build();
 
-        // todo : Contest셋팅해주기 contestId
         return Room.builder()
-                 // .contest()
+                .contest(contest)
                 .roomInfo(roomInfo)
                 .roomStatus(RoomStatus.RECRUITING)
                 .headUser(user)
@@ -48,8 +47,9 @@ public class RoomConverter {
 
     public static RoomRes.RequestUser toRequestUserDto(RoomUser roomUser) {
         return RoomRes.RequestUser.builder()
+                .userId(roomUser.getUser().getId())
                 .nickName(roomUser.getUser().getNickname())
-                .contestName("서포터즈 오로라 2기") // todo : 로직 추가
+                .contestName(roomUser.getRoom().getContest().getTitle())
                 .build();
     }
 
@@ -72,9 +72,9 @@ public class RoomConverter {
     public static RoomRes.UserDto toUserDto(User user) {
         return RoomRes.UserDto.builder()
                 .userId(user.getId())
-                .job("Developer") // todo : 추후 수정
+                .job(user.getJob().getJobName())
                 .nickName(user.getNickname())
-                .tendencyList(new ArrayList<>())
+                .tendencyList(user.getUserTendencyList())
                 .build();
     }
 

@@ -14,7 +14,8 @@ public class ContestRes {
     @AllArgsConstructor
     @Builder
     public static class ContestDto {
-        private String field;
+        private Long contestId;
+        private String imgUrl;
     }
 
     @NoArgsConstructor
@@ -34,7 +35,7 @@ public class ContestRes {
         private List<String> jobList;
         private List<String> tendencyList;
         private Integer maxUserCount;
-        private Integer currentUserCount; // todo : currentCount 업데이트 방법?
+        private Integer currentUserCount;
     }
 
     @NoArgsConstructor

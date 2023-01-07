@@ -27,8 +27,7 @@ public class RoomUser extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    // todo : 룸과 유저가 맺어졌는지 상태
+    
     @Enumerated(EnumType.STRING)
     private RoomRequestStatus roomRequestStatus;
 

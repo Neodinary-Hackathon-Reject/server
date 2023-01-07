@@ -65,6 +65,7 @@ public enum   BaseResponseStatus {
     NOT_EXIST_ROOM(false, 2030, "방 정보가 없습니다."),
     NOT_EXIST_CONTEST(false, 2031, "공모전 정보가 없습니다."),
 
+    NOT_HEAD_USER(false, 2032, "헤드 유저가 아닙니다."),
     /**
      * 3000 : Response 오류
      */
