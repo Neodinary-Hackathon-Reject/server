@@ -18,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -122,7 +121,7 @@ public class UserService {
         for (KeywordList list : keywordList) {
 
             Keyword keyword = Keyword.builder()
-                    .content(list.getContent())
+                    .content(list.getKeyword())
                     .user(user)
                     .build();
             keywordRepository.save(keyword);
