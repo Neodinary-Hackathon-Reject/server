@@ -142,5 +142,4 @@ public class TokenProvider implements InitializingBean {
         return claims.getBody().get("userId",Long.class);
     }
 
-
 }

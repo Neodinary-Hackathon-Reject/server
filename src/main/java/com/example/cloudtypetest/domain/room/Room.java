@@ -29,8 +29,8 @@ public class Room extends BaseEntity {
     private User headUser;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="room_info_id")
-    private RoomInfo roominfo;
+    @JoinColumn(name = "room_info_id")
+    private RoomInfo roomInfo;
 
     // todo : 룸상태(모집완료, 모집중, 등등..)
     @Enumerated(EnumType.STRING)

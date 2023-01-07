@@ -17,4 +17,5 @@ public class RoomInfo extends BaseEntity {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
+    private Integer maxUserCount;
 }
