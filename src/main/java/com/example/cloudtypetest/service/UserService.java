@@ -1,5 +1,7 @@
 package com.example.cloudtypetest.service;
 
+import com.example.cloudtypetest.base.BaseException;
+import com.example.cloudtypetest.base.BaseResponseStatus;
 import com.example.cloudtypetest.domain.user.Authority;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.jwt.JwtFilter;
@@ -29,25 +31,25 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
 
-    public TokenRes login(LoginUserReq loginUserReq) {
+    public TokenRes login(LoginUserReq loginUserReq) throws BaseException {
         // TODO: 여기서 아이디 찾기로 회원 유무 확인
-        /*
+
         if(!checkUserId(loginUserReq.getUsername())){
             throw new BaseException(BaseResponseStatus.NOT_EXIST_USER);
         }
 
-         */
+
+
 
         User user=userRepository.findByUsername(loginUserReq.getUsername());
         Long userId = user.getId();
 
-        // TODO: 여기서 passwordEncoder.matches 사용해서 비밀번호 디코딩해서 비교
-        /*
+
         if(!passwordEncoder.matches(loginUserReq.getPassword(),user.getPassword())){
             throw new BaseException(BaseResponseStatus.NOT_CORRECT_PASSWORD);
         }
 
-         */
+
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUserReq.getUsername(), loginUserReq.getPassword());
@@ -66,7 +68,7 @@ public class UserService {
         return new TokenRes(userId,jwt);
     }
 
-    public TokenRes signup(PostUserReq postUserReq) {
+    public TokenRes signup(PostUserReq postUserReq) throws BaseException {
         // TODO: 아이디 중복확인
 
         Authority authority = Authority.builder()
@@ -88,4 +90,13 @@ public class UserService {
 
         return new TokenRes(userId,jwt);
     }
+
+    public boolean checkNickName(String nickName) {
+        return userRepository.existsByNickname(nickName);
+    }
+
+    public boolean checkUserId(String userId) {
+        return userRepository.existsByUsername(userId);
+    }
+
 }
