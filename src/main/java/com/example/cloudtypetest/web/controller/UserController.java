@@ -3,13 +3,16 @@ package com.example.cloudtypetest.web.controller;
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponse;
 import com.example.cloudtypetest.domain.user.User;
-import com.example.cloudtypetest.service.UserService;
+import com.example.cloudtypetest.service.user.UserService;
 import com.example.cloudtypetest.web.dto.LoginUserReq;
 import com.example.cloudtypetest.web.dto.PostUserReq;
 import com.example.cloudtypetest.web.dto.TokenRes;
 import com.example.cloudtypetest.web.dto.user.UserReq;
+import com.example.cloudtypetest.web.dto.user.UserRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.example.cloudtypetest.base.BaseResponseStatus.*;
 
@@ -56,9 +59,13 @@ public class UserController {
         }catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
-
     }
 
+    @GetMapping("/user/signup")
+    public BaseResponse<List<UserRes.GetKeywordRes>> getKeywordList(@RequestParam("keyword") String keyword){
+        List<UserRes.GetKeywordRes> getKeywordRes = userService.getKeywordList(keyword);
+        return new BaseResponse<>(getKeywordRes);
+    }
     @GetMapping("/my_page")
     public BaseResponse<String> getMyPage(){
 

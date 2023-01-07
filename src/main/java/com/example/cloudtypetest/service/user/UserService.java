@@ -1,4 +1,4 @@
-package com.example.cloudtypetest.service;
+package com.example.cloudtypetest.service.user;
 
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponseStatus;
@@ -10,6 +10,7 @@ import com.example.cloudtypetest.repository.KeywordRepository;
 import com.example.cloudtypetest.repository.TendencyRepository;
 import com.example.cloudtypetest.repository.UserRepository;
 import com.example.cloudtypetest.web.dto.*;
+import com.example.cloudtypetest.web.dto.user.UserRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
@@ -138,5 +138,10 @@ public class UserService {
         }
 
 
+    }
+
+    public List<UserRes.GetKeywordRes> getKeywordList(String keyword) {
+
+        return null;
     }
 }

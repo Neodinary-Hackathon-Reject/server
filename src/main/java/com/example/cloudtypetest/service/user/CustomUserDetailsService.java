@@ -1,4 +1,4 @@
-package com.example.cloudtypetest.service;
+package com.example.cloudtypetest.service.user;
 
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.repository.UserRepository;

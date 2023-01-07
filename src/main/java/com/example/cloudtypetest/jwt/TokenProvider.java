@@ -3,7 +3,7 @@ package com.example.cloudtypetest.jwt;
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.repository.UserRepository;
-import com.example.cloudtypetest.service.CustomUserDetailsService;
+import com.example.cloudtypetest.service.user.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
