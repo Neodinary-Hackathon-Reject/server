@@ -9,7 +9,7 @@ import com.example.cloudtypetest.web.dto.room.RoomReq;
 import java.util.List;
 
 public interface RoomService {
-    Room createRoom(User user, RoomReq.CreateRoom createRoomDto);
+    Room createRoom(User user, RoomReq.CreateRoom createRoomDto) throws BaseException ;
 
     RoomUser applyRoom(User user, Long roomId) throws BaseException;
 

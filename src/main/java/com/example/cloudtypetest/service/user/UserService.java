@@ -83,8 +83,6 @@ public class UserService {
     }
 
     public TokenRes signup(PostUserReq postUserReq) throws BaseException {
-        // TODO: 아이디 중복확인
-
             Authority authority = Authority.builder()
                     .authorityName("ROLE_USER")
                     .build();

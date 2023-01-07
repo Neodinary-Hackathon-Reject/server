@@ -37,8 +37,12 @@ public class RoomRestController {
     @PostMapping("")
     public BaseResponse<RoomRes.CreateRoom> creatRoom(@RequestBody RoomReq.CreateRoom createRoomDto) {
         User loginUser = userGetter.getUserById(tokenProvider.getUserIdx());
-        Room createdRoom = roomService.createRoom(loginUser, createRoomDto);
-        return new BaseResponse<>(RoomConverter.toCreateRoomDto(createdRoom));
+        try {
+            Room createdRoom = roomService.createRoom(loginUser, createRoomDto);
+            return new BaseResponse<>(RoomConverter.toCreateRoomDto(createdRoom));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
     @PostMapping("/apply/{roomId}")

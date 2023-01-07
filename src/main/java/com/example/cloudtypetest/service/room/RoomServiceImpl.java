@@ -35,16 +35,20 @@ public class RoomServiceImpl implements RoomService {
     private final ContestRepository contestRepository;
 
     @Transactional
-    public Room createRoom(User user, RoomReq.CreateRoom createRoomDto) {
-        Room room = RoomConverter.toRoomEntity(createRoomDto, user);
-        Room createdRoom = roomRepository.save(room);
-        RoomUser roomUser = RoomUser.builder()
-                .room(createdRoom)
-                .user(user)
-                .roomRequestStatus(RoomRequestStatus.ACCEPT) // 첫 사용자는 헤드 유저로서 ACCEPT임.
-                .build();
-        roomUserRepository.save(roomUser);
-        return createdRoom;
+    public Room createRoom(User user, RoomReq.CreateRoom createRoomDto) throws BaseException {
+        Optional<Contest> optionalContest = contestRepository.findById(createRoomDto.getContestId());
+        if(optionalContest.isPresent()) {
+            Room room = RoomConverter.toRoomEntity(createRoomDto, user);
+            Room createdRoom = roomRepository.save(room);
+            RoomUser roomUser = RoomUser.builder()
+                    .room(createdRoom)
+                    .user(user)
+                    .roomRequestStatus(RoomRequestStatus.ACCEPT) // 첫 사용자는 헤드 유저로서 ACCEPT임.
+                    .build();
+            roomUserRepository.save(roomUser);
+            return createdRoom;
+        }
+        throw new BaseException(BaseResponseStatus.NOT_EXIST_CONTEST);
     }
 
     @Transactional
