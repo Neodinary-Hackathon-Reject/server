@@ -40,7 +40,6 @@ public class RoomConverter {
 
     public static RoomRes.ApplyRoom toApplyRoomDto(RoomUser roomUser) {
         return RoomRes.ApplyRoom.builder()
-
                 .build();
     }
 
@@ -62,6 +61,24 @@ public class RoomConverter {
     public static RoomRes.ConfirmUser toConfirmUserDto(String confirmStatus) {
         return RoomRes.ConfirmUser.builder()
                 .confirmStatus(confirmStatus)
+                .build();
+    }
+
+    public static RoomRes.UserDto toUserDto(User user) {
+        return RoomRes.UserDto.builder()
+                .job("Developer") // todo : 추후 수정
+                .nickName(user.getNickname())
+                .tendencyList(new ArrayList<>())
+                .build();
+    }
+
+    public static RoomRes.UserListDto toUserListDto(List<User> userList) {
+        List<RoomRes.UserDto> userDtoList = new ArrayList<>();
+        for(User user : userList) {
+            userDtoList.add(RoomConverter.toUserDto(user));
+        }
+        return RoomRes.UserListDto.builder()
+                .userDtoList(userDtoList)
                 .build();
     }
 }

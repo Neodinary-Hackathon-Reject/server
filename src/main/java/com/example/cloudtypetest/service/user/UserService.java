@@ -2,13 +2,13 @@ package com.example.cloudtypetest.service.user;
 
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponseStatus;
+import com.example.cloudtypetest.domain.enums.RoomRequestStatus;
+import com.example.cloudtypetest.domain.room.Room;
+import com.example.cloudtypetest.domain.room.RoomUser;
 import com.example.cloudtypetest.domain.user.*;
 import com.example.cloudtypetest.jwt.JwtFilter;
 import com.example.cloudtypetest.jwt.TokenProvider;
-import com.example.cloudtypetest.repository.JobRepository;
-import com.example.cloudtypetest.repository.KeywordRepository;
-import com.example.cloudtypetest.repository.TendencyRepository;
-import com.example.cloudtypetest.repository.UserRepository;
+import com.example.cloudtypetest.repository.*;
 import com.example.cloudtypetest.web.dto.*;
 import com.example.cloudtypetest.web.dto.user.UserRes;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,9 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    private final RoomRepository roomRepository;
+
+    private final RoomUserRepository roomUserRepository;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -145,5 +149,14 @@ public class UserService {
     public List<UserRes.GetKeywordRes> getKeywordList(String keyword) {
 
         return null;
+    }
+
+    public List<User> findByRoomAndRoomRequestStatus(Long roomId, RoomRequestStatus accept) {
+        Room room = roomRepository.findById(roomId).get();
+        List<RoomUser> roomUserList = roomUserRepository.findByRoomAndRoomRequestStatus(room, RoomRequestStatus.ACCEPT);
+        List<User> userList = roomUserList.stream()
+                .map(roomUser -> userRepository.findById(roomUser.getUser().getId()).get())
+                .collect(Collectors.toList());
+        return userList;
     }
 }

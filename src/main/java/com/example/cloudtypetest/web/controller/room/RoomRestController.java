@@ -2,12 +2,14 @@ package com.example.cloudtypetest.web.controller.room;
 
 import com.example.cloudtypetest.base.BaseResponse;
 import com.example.cloudtypetest.converter.RoomConverter;
+import com.example.cloudtypetest.domain.enums.RoomRequestStatus;
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
 import com.example.cloudtypetest.domain.room.RoomUser;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.jwt.TokenProvider;
 import com.example.cloudtypetest.service.room.RoomService;
+import com.example.cloudtypetest.service.user.UserService;
 import com.example.cloudtypetest.util.UserGetter;
 import com.example.cloudtypetest.web.dto.room.RoomReq;
 import com.example.cloudtypetest.web.dto.room.RoomRes;
@@ -25,6 +27,8 @@ public class RoomRestController {
     private final TokenProvider tokenProvider;
 
     private final RoomService roomService;
+
+    private final UserService userService;
 
     // 특정 공모전에 대한 방 리스트 내려주는 API
     //
@@ -61,10 +65,16 @@ public class RoomRestController {
         접속한 유저가 roomId, 허락하고자 하는 userId, ACCEPT / REJECT을 보냄
     */
     @PostMapping("/confirm/request")
-    public BaseResponse<RoomRes.ConfirmUser> confirmRequest(RoomReq.ConfirmUser confirmUserDto) {
+    public BaseResponse<RoomRes.ConfirmUser> confirmRequest(@RequestBody RoomReq.ConfirmUser confirmUserDto) {
         User headUser = userGetter.getUserById(tokenProvider.getUserIdx());
         String confirmStatus = roomService.confirmRequest(headUser, confirmUserDto);
         return new BaseResponse<>(RoomConverter.toConfirmUserDto(confirmStatus));
+    }
+
+    @GetMapping("/{roomId}/users")
+    public BaseResponse<RoomRes.UserListDto> getUsersbyRoom(@PathVariable(value = "roomId") Long roomId) {
+        List<User> userList = userService.findByRoomAndRoomRequestStatus(roomId, RoomRequestStatus.ACCEPT);
+        return new BaseResponse<>(RoomConverter.toUserListDto(userList));
     }
 
     // todo : 여기 스펙이 불분명하므로 추후 작성
@@ -72,4 +82,5 @@ public class RoomRestController {
     public BaseResponse<RoomRes.RoomInfoDto> updateRoomInfo() {
         return null;
     }
+
 }
