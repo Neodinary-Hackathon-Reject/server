@@ -5,6 +5,7 @@ import com.example.cloudtypetest.base.BaseResponseStatus;
 import com.example.cloudtypetest.converter.RoomConverter;
 import com.example.cloudtypetest.domain.Contest;
 import com.example.cloudtypetest.domain.enums.RoomRequestStatus;
+import com.example.cloudtypetest.domain.enums.RoomStatus;
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
 import com.example.cloudtypetest.domain.room.RoomUser;
@@ -97,14 +98,18 @@ public class RoomServiceImpl implements RoomService {
         throw new BaseException(BaseResponseStatus.NOT_EXIST_ROOM);
     }
 
-    @Override
+    @Transactional
     public List<Room> findByContest(Long contestId) throws BaseException {
         Optional<Contest> optionalContest = contestRepository.findById(contestId);
         if(optionalContest.isPresent()) {
             List<Room> roomList = roomRepository.findByContest(optionalContest.get());
             for(Room room : roomList) {
                 long currentUserCount = roomUserRepository.findByRoomAndRoomRequestStatus(room, RoomRequestStatus.ACCEPT).size();
-                room.getRoomInfo().setCurrentUserCount(Integer.valueOf((int)currentUserCount));
+                Integer currentUserCountBoxing = Integer.valueOf((int)currentUserCount);
+                room.getRoomInfo().setCurrentUserCount(currentUserCountBoxing);
+                if(currentUserCountBoxing == room.getRoomInfo().getMaxUserCount()) {
+                    room.setRoomStatus(RoomStatus.COMPLETE);
+                }
             }
             return roomList;
         }
