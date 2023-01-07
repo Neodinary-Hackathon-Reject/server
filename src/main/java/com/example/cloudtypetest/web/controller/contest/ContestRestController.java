@@ -39,4 +39,5 @@ public class ContestRestController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
 }
