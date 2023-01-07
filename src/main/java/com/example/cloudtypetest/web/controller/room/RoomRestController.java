@@ -3,6 +3,8 @@ package com.example.cloudtypetest.web.controller.room;
 import com.example.cloudtypetest.base.BaseResponse;
 import com.example.cloudtypetest.converter.RoomConverter;
 import com.example.cloudtypetest.domain.room.Room;
+import com.example.cloudtypetest.domain.room.RoomInfo;
+import com.example.cloudtypetest.domain.room.RoomUser;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.jwt.TokenProvider;
 import com.example.cloudtypetest.service.room.RoomService;
@@ -29,9 +31,11 @@ public class RoomRestController {
         return new BaseResponse<>(RoomConverter.toCreateRoomDto(createdRoom));
     }
 
-    @PostMapping("/apply")
-    public BaseResponse<RoomRes.ApplyRoom> applyRoom() {
-        return null;
+    @PostMapping("/apply/{roomId}")
+    public BaseResponse<RoomRes.ApplyRoom> applyRoom(@PathVariable(name = "roomId" ) Long roomId) {
+        User loginUser = userGetter.getUserById(tokenProvider.getUserIdx());
+        RoomUser roomUser = roomService.applyRoom(loginUser, roomId);
+        return new BaseResponse<>(RoomConverter.toApplyRoomDto(roomUser));
     }
 
     @GetMapping("/request/{roomId}")
@@ -45,7 +49,7 @@ public class RoomRestController {
     }
 
     @PatchMapping("/room/info")
-    public BaseResponse<RoomRes.RoomInfo> updateRoomInfo() {
+    public BaseResponse<RoomRes.RoomInfoDto> updateRoomInfo() {
         return null;
     }
 }

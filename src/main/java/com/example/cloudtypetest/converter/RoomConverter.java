@@ -2,6 +2,7 @@ package com.example.cloudtypetest.converter;
 
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
+import com.example.cloudtypetest.domain.room.RoomUser;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.web.dto.room.RoomReq;
 import com.example.cloudtypetest.web.dto.room.RoomRes;
@@ -22,6 +23,12 @@ public class RoomConverter {
         return RoomRes.CreateRoom.builder()
                 .createdAt(LocalDateTime.now())
                 .createdRoomId(room.getId())
+                .build();
+    }
+
+    public static RoomRes.ApplyRoom toApplyRoomDto(RoomUser roomUser) {
+        return RoomRes.ApplyRoom.builder()
+
                 .build();
     }
 }

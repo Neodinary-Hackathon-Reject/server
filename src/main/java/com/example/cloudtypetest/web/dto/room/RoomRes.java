@@ -23,7 +23,9 @@ public class RoomRes {
     @AllArgsConstructor
     @Builder
     public static class ApplyRoom {
-        private String field;
+        private Long userId;
+        private Long roomId;
+        private LocalDateTime createdAt;
     }
 
     @NoArgsConstructor
@@ -54,7 +56,7 @@ public class RoomRes {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class RoomInfo {
+    public static class RoomInfoDto {
         private String field;
     }
 }
