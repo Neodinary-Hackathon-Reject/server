@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class UserService {
     private final JobRepository jobRepository;
     private final TendencyRepository tenancyRepository;
     private final KeywordRepository keywordRepository;
+    private final KeywordInfoRepository keywordInfoRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -98,6 +100,8 @@ public class UserService {
                     .place(postUserReq.getPlace())
                     .introduce(postUserReq.getPlace())
                     .portfolio(postUserReq.getPortfolio())
+                    .userKeywordList(postUserReq.getKeywordList())
+                    .userTendencyList(postUserReq.getTendencyList())
                     .authorities(Collections.singleton(authority))
                     .activated(true)
                     .build();
@@ -147,8 +151,12 @@ public class UserService {
     }
 
     public List<UserRes.GetKeywordRes> getKeywordList(String keyword) {
+        List<KeywordInfoRepository.GetKeywordList> keywordInfoResult = keywordInfoRepository.findByContentContains(keyword);
+        List<UserRes.GetKeywordRes> result = new ArrayList<>();
+        keywordInfoResult.forEach(keywordInfo -> result.add(
+                new UserRes.GetKeywordRes(keywordInfo.getContent())));
 
-        return null;
+        return result;
     }
 
     public List<User> findByRoomAndRoomRequestStatus(Long roomId, RoomRequestStatus accept) {

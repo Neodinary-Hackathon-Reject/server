@@ -56,11 +56,15 @@ public class UserController {
             if (userService.checkNickName(postUserReq.getNickname())) {
                 return new BaseResponse<>(USERS_EXISTS_NICKNAME);
             }
+            System.out.println(postUserReq.getTendencyList());
             TokenRes tokenRes = userService.signup(postUserReq);
 
             User user = userService.findUserById(tokenRes.getUserId());
+            /*
             userService.postKeyword(user,postUserReq.getKeywordList());
             userService.postTendency(user,postUserReq.getTendencyList());
+
+             */
 
             return new BaseResponse<>(tokenRes);
         }catch(BaseException e){
@@ -68,11 +72,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/signup")
+    @GetMapping("/signup/keyword")
     public BaseResponse<List<UserRes.GetKeywordRes>> getKeywordList(@RequestParam("keyword") String keyword){
+        System.out.println(keyword);
         List<UserRes.GetKeywordRes> getKeywordRes = userService.getKeywordList(keyword);
         return new BaseResponse<>(getKeywordRes);
     }
+
+
 
     @GetMapping("/check/userId")
     public BaseResponse<String> checkUserId(@Param("userId") String userId){
@@ -105,6 +112,8 @@ public class UserController {
 
         return null;
     }
+
+
 
 
 }
