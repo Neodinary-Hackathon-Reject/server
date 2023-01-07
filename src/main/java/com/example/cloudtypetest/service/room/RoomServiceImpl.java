@@ -1,11 +1,13 @@
 package com.example.cloudtypetest.service.room;
 
 import com.example.cloudtypetest.converter.RoomConverter;
+import com.example.cloudtypetest.domain.Contest;
 import com.example.cloudtypetest.domain.enums.RoomRequestStatus;
 import com.example.cloudtypetest.domain.room.Room;
 import com.example.cloudtypetest.domain.room.RoomInfo;
 import com.example.cloudtypetest.domain.room.RoomUser;
 import com.example.cloudtypetest.domain.user.User;
+import com.example.cloudtypetest.repository.ContestRepository;
 import com.example.cloudtypetest.repository.RoomRepository;
 import com.example.cloudtypetest.repository.RoomUserRepository;
 import com.example.cloudtypetest.repository.UserRepository;
@@ -25,6 +27,8 @@ public class RoomServiceImpl implements RoomService {
     private final RoomUserRepository roomUserRepository;
 
     private final UserRepository userRepository;
+
+    private final ContestRepository contestRepository;
 
     @Transactional
     public Room createRoom(User user, RoomReq.CreateRoom createRoomDto) {
@@ -72,4 +76,11 @@ public class RoomServiceImpl implements RoomService {
         roomUserRepository.delete(roomUser);
         return "REJECT";
     }
+
+    @Override
+    public List<Room> findByContest(Long contestId) {
+        Contest contest = contestRepository.findById(contestId).get();
+        return roomRepository.findByContest(contest);
+    }
+
 }

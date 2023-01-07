@@ -36,6 +36,10 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
     public TokenRes login(LoginUserReq loginUserReq) throws BaseException {
         // TODO: 여기서 아이디 찾기로 회원 유무 확인
 

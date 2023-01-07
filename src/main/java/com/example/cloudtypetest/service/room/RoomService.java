@@ -15,4 +15,6 @@ public interface RoomService {
     List<RoomUser> getPendingRoomUserList(User headUser, Long roomId);
 
     String confirmRequest(User headUser, RoomReq.ConfirmUser confirmUserDto);
+
+    List<Room> findByContest(Long contestId);
 }

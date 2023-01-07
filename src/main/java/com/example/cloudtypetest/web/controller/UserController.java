@@ -2,6 +2,7 @@ package com.example.cloudtypetest.web.controller;
 
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponse;
+import com.example.cloudtypetest.converter.UserConverter;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.service.user.UserService;
 import com.example.cloudtypetest.web.dto.LoginUserReq;
@@ -23,6 +24,11 @@ import static com.example.cloudtypetest.base.BaseResponseStatus.*;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("")
+    public BaseResponse<UserRes.MateListDto> getMate() {
+        List<User> userList = userService.findAll();
+        return new BaseResponse<>(UserConverter.toMateListDto(userList));
+    }
 
     @PostMapping("/login")
     public BaseResponse<TokenRes> login(@RequestBody LoginUserReq loginUserReq){
