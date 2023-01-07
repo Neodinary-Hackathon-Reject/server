@@ -48,8 +48,6 @@ public class UserService {
         }
 
 
-
-
         User user=userRepository.findByUsername(loginUserReq.getUsername());
         Long userId = user.getId();
 
