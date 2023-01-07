@@ -87,8 +87,12 @@ public class RoomRestController {
 
     @GetMapping("/{roomId}/users")
     public BaseResponse<RoomRes.UserListDto> getUsersbyRoom(@PathVariable(value = "roomId") Long roomId) {
-        List<User> userList = userService.findByRoomAndRoomRequestStatus(roomId, RoomRequestStatus.ACCEPT);
-        return new BaseResponse<>(RoomConverter.toUserListDto(userList));
+        try {
+            List<User> userList = userService.findByRoomAndRoomRequestStatus(roomId, RoomRequestStatus.ACCEPT);
+            return new BaseResponse<>(RoomConverter.toUserListDto(userList));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
 
