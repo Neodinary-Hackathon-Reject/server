@@ -39,6 +39,7 @@ public class UserRes {
     @Builder
     public static class MateDto {
         private Long userId;
+        private String profileImageUrl;
         private String nickName;
         private String address;
         private String job;
@@ -51,6 +52,7 @@ public class UserRes {
     @Builder
     public static class UserDetailDto{
         private Long userId;
+        private String profileImageUrl;
         private String nickname;
         private String region;
         private String portfolio;
@@ -72,6 +74,7 @@ public class UserRes {
     @Builder
     public static class MateDetailDto {
         private Long userId;
+        private String profileImageUrl;
         private String nickname;
         private String region;
         private String review;

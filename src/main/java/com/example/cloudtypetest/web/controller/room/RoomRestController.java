@@ -100,8 +100,7 @@ public class RoomRestController {
     }
 
 
-
-    // todo : 여기 스펙이 불분명하므로 추후 작성
+    @Deprecated
     @PatchMapping("/room/info")
     public BaseResponse<RoomRes.RoomInfoDto> updateRoomInfo() {
         return null;
