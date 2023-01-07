@@ -25,7 +25,7 @@ public class User extends BaseEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     //username == userId
@@ -38,8 +38,6 @@ public class User extends BaseEntity {
     @Column(name = "password", length = 100)
     private String password;
 
-    @Column(name = "name", length = 50)
-    private String name;
 
     @Column(name = "nickname", length = 50)
     private String nickname;
@@ -47,8 +45,19 @@ public class User extends BaseEntity {
     @Column(name = "activated")
     private boolean activated;
 
-    @Column(name="phone")
-    private String phone;
+
+    @Column(name="place")
+    private String place;
+
+    @Column(name="region")
+    private String region;
+
+    @Column(name="introduce")
+    private String introduce;
+
+    @Column(name="portfolio")
+    private String portfolio;
+
 
     @OneToOne
     @JoinColumn(name = "job_id")

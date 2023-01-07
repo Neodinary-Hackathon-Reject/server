@@ -3,6 +3,7 @@ package com.example.cloudtypetest.web.dto;
 import com.example.cloudtypetest.domain.user.User;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,11 +20,19 @@ public class PostUserReq {
 
     private String nickname;
 
-    private String name;
+    private Long job;
 
-    private String phone;
+    private String place;
 
+    private String region;
 
+    private String introduce;
+
+    private String portfolio;
+
+    private List<KeywordList> keywordList;
+
+    private List<TendencyList> tendencyList;;
     //이건 requestBody 입력할 때, 입력할 필요 없음
     private Set<AuthorityRes> authorityResSet;
 
@@ -34,8 +43,6 @@ public class PostUserReq {
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .nickname(user.getNickname())
-                .name(user.getName())
-                .name(user.getPhone())
                 .authorityResSet(user.getAuthorities().stream()
                         .map(authority -> AuthorityRes.builder().authorityName(authority.getAuthorityName()).build())
                         .collect(Collectors.toSet()))

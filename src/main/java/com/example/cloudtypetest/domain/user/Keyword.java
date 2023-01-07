@@ -1,4 +1,4 @@
-package com.example.cloudtypetest.domain.room;
+package com.example.cloudtypetest.domain.user;
 
 import com.example.cloudtypetest.domain.common.BaseEntity;
 import lombok.*;
@@ -11,11 +11,19 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomInfo extends BaseEntity {
+public class Keyword extends BaseEntity {
     @Id
     @Column
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    private Integer maxUserCount;
+    @Column(name="")
+    private String content;
+
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
+
 }

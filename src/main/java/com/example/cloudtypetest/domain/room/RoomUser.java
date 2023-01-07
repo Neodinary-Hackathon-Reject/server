@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class RoomUser extends BaseEntity {
     @Id
     @Column
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @ManyToOne

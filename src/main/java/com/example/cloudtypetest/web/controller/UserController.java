@@ -2,19 +2,14 @@ package com.example.cloudtypetest.web.controller;
 
 import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponse;
+import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.service.UserService;
 import com.example.cloudtypetest.web.dto.LoginUserReq;
 import com.example.cloudtypetest.web.dto.PostUserReq;
 import com.example.cloudtypetest.web.dto.TokenRes;
+import com.example.cloudtypetest.web.dto.user.UserReq;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import static com.example.cloudtypetest.base.BaseResponseStatus.*;
 
@@ -23,6 +18,7 @@ import static com.example.cloudtypetest.base.BaseResponseStatus.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
 
     @PostMapping("/login")
     public BaseResponse<TokenRes> login(@RequestBody LoginUserReq loginUserReq){
@@ -50,10 +46,35 @@ public class UserController {
             if (userService.checkNickName(postUserReq.getNickname())) {
                 return new BaseResponse<>(USERS_EXISTS_NICKNAME);
             }
-            return new BaseResponse<>(userService.signup(postUserReq));
+            TokenRes tokenRes = userService.signup(postUserReq);
+
+            User user = userService.findUserById(tokenRes.getUserId());
+            userService.postKeyword(user,postUserReq.getKeywordList());
+            userService.postTendency(user,postUserReq.getTendencyList());
+
+            return new BaseResponse<>(tokenRes);
         }catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
 
     }
+
+    @GetMapping("/my_page")
+    public BaseResponse<String> getMyPage(){
+
+        return null;
+    }
+
+    @GetMapping("/my_room")
+    public BaseResponse<String> getMyRoom(){
+        return null;
+    }
+
+    @PatchMapping
+    public BaseResponse<String> patchUserInfo(@RequestBody UserReq.PatchUserReq patchUserReq){
+
+        return null;
+    }
+
+
 }

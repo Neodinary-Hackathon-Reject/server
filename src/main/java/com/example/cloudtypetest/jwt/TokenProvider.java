@@ -1,5 +1,6 @@
 package com.example.cloudtypetest.jwt;
 
+import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.repository.UserRepository;
 import com.example.cloudtypetest.service.CustomUserDetailsService;
@@ -126,7 +127,7 @@ public class TokenProvider implements InitializingBean {
     @return int
     @throws BaseException
      */
-    public Long getUserIdx(){
+    public Long getUserIdx() throws BaseException {
         //1. JWT 추출
         String accessToken = getJwt();
 
