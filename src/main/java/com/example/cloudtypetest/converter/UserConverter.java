@@ -33,6 +33,7 @@ public class UserConverter {
         return UserRes.MateDetailDto.builder().userId(userDetailDto.getUserId())
                 .nickname(userDetailDto.getNickname())
                 .region(userDetailDto.getRegion())
+                .profileImageUrl(userDetailDto.getProfileImageUrl())
                 .review(reviewDetailDto.getReview())
                 .portfolio(userDetailDto.getPortfolio())
                 .keywordList(userDetailDto.getKeywordList())

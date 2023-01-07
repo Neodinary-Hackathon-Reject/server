@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserRes {
@@ -89,6 +90,8 @@ public class UserRes {
     @AllArgsConstructor
     @Builder
     public static class ReviewListDto {
+        private Long roomId;
+        private String imgUrl;
         private String title;
         private String date;
     }
