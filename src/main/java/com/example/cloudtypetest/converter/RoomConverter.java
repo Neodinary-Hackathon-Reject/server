@@ -40,6 +40,9 @@ public class RoomConverter {
 
     public static RoomRes.ApplyRoom toApplyRoomDto(RoomUser roomUser) {
         return RoomRes.ApplyRoom.builder()
+                .roomId(roomUser.getRoom().getId())
+                .userId(roomUser.getUser().getId())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 

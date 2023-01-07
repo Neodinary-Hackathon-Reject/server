@@ -41,7 +41,7 @@ public class RoomRestController {
     }
 
     @PostMapping("/apply/{roomId}")
-    public BaseResponse<RoomRes.ApplyRoom> applyRoom(@PathVariable(name = "roomId" ) Long roomId) {
+    public BaseResponse<RoomRes.ApplyRoom> applyRoom(@PathVariable(name = "roomId") Long roomId) {
         User loginUser = userGetter.getUserById(tokenProvider.getUserIdx());
         RoomUser roomUser = roomService.applyRoom(loginUser, roomId);
         return new BaseResponse<>(RoomConverter.toApplyRoomDto(roomUser));
