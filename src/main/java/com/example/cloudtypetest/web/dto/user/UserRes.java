@@ -42,4 +42,5 @@ public class UserRes {
         private String job;
         // 화면 나오면 추가..
     }
+
 }

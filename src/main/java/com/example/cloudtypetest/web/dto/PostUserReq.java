@@ -30,9 +30,9 @@ public class PostUserReq {
 
     private String portfolio;
 
-    private List<KeywordList> keywordList;
+    private List<String> keywordList;
 
-    private List<TendencyList> tendencyList;;
+    private List<String> tendencyList;;
     //이건 requestBody 입력할 때, 입력할 필요 없음
     private Set<AuthorityRes> authorityResSet;
 

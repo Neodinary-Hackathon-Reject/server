@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,6 +58,14 @@ public class User extends BaseEntity {
 
     @Column(name="portfolio")
     private String portfolio;
+
+    @Column
+    @ElementCollection
+    private List<String> userTendencyList;
+
+    @Column
+    @ElementCollection
+    private List<String> userKeywordList;
 
 
     @OneToOne
