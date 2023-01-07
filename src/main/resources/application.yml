@@ -20,6 +20,12 @@ spring:
         hbm2ddl:
           auto: create
         default_batch_fetch_size: 1000
+#jwt 시크릿 키
+jwt:
+  header: Authorization
+  #umc-3rd-team-project-lifolio-umc-3rd-team-project-lifolio-umc-3rd-team-project-lifolio-umc-3rd-team-project-lifolio
+  secret: dW1jLTNyZC10ZWFtLXByb2plY3QtbGlmb2xpby11bWMtM3JkLXRlYW0tcHJvamVjdC1saWZvbGlvLXVtYy0zcmQtdGVhbS1wcm9qZWN0LWxpZm9saW8tdW1jLTNyZC10ZWFtLXByb2plY3QtbGlmb2xpbwo=
+  token-validity-in-seconds: 86400
 
 # allowed-origins ?? ??
 cors:

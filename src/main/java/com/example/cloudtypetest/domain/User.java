@@ -1,0 +1,70 @@
+package com.example.cloudtypetest.domain;
+
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Set;
+
+@Entity
+@Table(name = "User")
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@DynamicUpdate
+@DynamicInsert
+public class User {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    //username == userId
+    //여러가지 시도해보다가 오류나서 일단은 username상태로 뒀습니다ㅠㅠ
+    //테스트용 주석  (민기)
+    @Column(name = "username", length = 50, unique = true)
+    private String username;
+
+
+    @Column(name = "password", length = 100)
+    private String password;
+
+    @Column(name = "name", length = 50)
+    private String name;
+
+    @Column(name = "nickname", length = 50)
+    private String nickname;
+
+    @Column(name = "activated")
+    private boolean activated;
+
+    @Column(name="phone")
+    private String phone;
+
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+
+
+
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
+}
