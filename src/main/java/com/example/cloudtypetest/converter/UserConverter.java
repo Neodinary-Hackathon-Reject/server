@@ -13,8 +13,8 @@ public class UserConverter {
                 .userId(user.getId())
                 .nickName(user.getNickname())
                 .address(user.getRegion())
-                .tendencyList(new ArrayList<>())
-                .job("Developer") // todo : 테이블 바뀌면 바꿔주기
+                .tendencyList(user.getUserTendencyList())
+                .job(user.getJob().getJobName())
                 .build();
     }
 
