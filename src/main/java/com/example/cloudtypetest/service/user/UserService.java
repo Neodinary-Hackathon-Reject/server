@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -159,12 +160,16 @@ public class UserService {
         return result;
     }
 
-    public List<User> findByRoomAndRoomRequestStatus(Long roomId, RoomRequestStatus accept) {
-        Room room = roomRepository.findById(roomId).get();
-        List<RoomUser> roomUserList = roomUserRepository.findByRoomAndRoomRequestStatus(room, RoomRequestStatus.ACCEPT);
-        List<User> userList = roomUserList.stream()
-                .map(roomUser -> userRepository.findById(roomUser.getUser().getId()).get())
-                .collect(Collectors.toList());
-        return userList;
+    public List<User> findByRoomAndRoomRequestStatus(Long roomId, RoomRequestStatus accept) throws BaseException {
+
+        Optional<Room> optionalRoom = roomRepository.findById(roomId);
+        if(optionalRoom.isPresent()) {
+            List<RoomUser> roomUserList = roomUserRepository.findByRoomAndRoomRequestStatus(optionalRoom.get(), RoomRequestStatus.ACCEPT);
+            List<User> userList = roomUserList.stream()
+                    .map(roomUser -> userRepository.findById(roomUser.getUser().getId()).get())
+                    .collect(Collectors.toList());
+            return userList;
+        }
+        throw new BaseException(BaseResponseStatus.NOT_EXIST_ROOM);
     }
 }

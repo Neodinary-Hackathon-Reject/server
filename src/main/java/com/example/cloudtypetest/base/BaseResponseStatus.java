@@ -62,7 +62,8 @@ public enum   BaseResponseStatus {
     ALREADY_DELETED_USER(false, 2028, "이미 탈퇴된 유저입니다."),
     NOT_CORRECT_USER(false,2029,"회원 정보에 일치하는 아이디가 없습니다."),
 
-
+    NOT_EXIST_ROOM(false, 2030, "방 정보가 없습니다."),
+    NOT_EXIST_CONTEST(false, 2031, "공모전 정보가 없습니다."),
 
     /**
      * 3000 : Response 오류

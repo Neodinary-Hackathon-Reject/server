@@ -1,5 +1,6 @@
 package com.example.cloudtypetest.web.controller.room;
 
+import com.example.cloudtypetest.base.BaseException;
 import com.example.cloudtypetest.base.BaseResponse;
 import com.example.cloudtypetest.converter.RoomConverter;
 import com.example.cloudtypetest.domain.enums.RoomRequestStatus;
@@ -41,10 +42,14 @@ public class RoomRestController {
     }
 
     @PostMapping("/apply/{roomId}")
-    public BaseResponse<RoomRes.ApplyRoom> applyRoom(@PathVariable(name = "roomId" ) Long roomId) {
+    public BaseResponse<RoomRes.ApplyRoom> applyRoom(@PathVariable(name = "roomId") Long roomId) {
         User loginUser = userGetter.getUserById(tokenProvider.getUserIdx());
-        RoomUser roomUser = roomService.applyRoom(loginUser, roomId);
-        return new BaseResponse<>(RoomConverter.toApplyRoomDto(roomUser));
+        try {
+            RoomUser roomUser = roomService.applyRoom(loginUser, roomId);
+            return new BaseResponse<>(RoomConverter.toApplyRoomDto(roomUser));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
     /*
@@ -56,8 +61,12 @@ public class RoomRestController {
     @GetMapping("/request/{roomId}")
     public BaseResponse<RoomRes.RequestUserList> getRequestList(@PathVariable(name = "roomId" ) Long roomId) {
         User headUser = userGetter.getUserById(tokenProvider.getUserIdx());
-        List<RoomUser> roomUserList = roomService.getPendingRoomUserList(headUser, roomId);
-        return new BaseResponse<>(RoomConverter.toRequestUserListDto(roomUserList));
+        try {
+            List<RoomUser> roomUserList = roomService.getPendingRoomUserList(headUser, roomId);
+            return new BaseResponse<>(RoomConverter.toRequestUserListDto(roomUserList));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
     /*
@@ -67,15 +76,26 @@ public class RoomRestController {
     @PostMapping("/confirm/request")
     public BaseResponse<RoomRes.ConfirmUser> confirmRequest(@RequestBody RoomReq.ConfirmUser confirmUserDto) {
         User headUser = userGetter.getUserById(tokenProvider.getUserIdx());
-        String confirmStatus = roomService.confirmRequest(headUser, confirmUserDto);
-        return new BaseResponse<>(RoomConverter.toConfirmUserDto(confirmStatus));
+        try {
+            String confirmStatus = roomService.confirmRequest(headUser, confirmUserDto);
+            return new BaseResponse<>(RoomConverter.toConfirmUserDto(confirmStatus));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+
     }
 
     @GetMapping("/{roomId}/users")
     public BaseResponse<RoomRes.UserListDto> getUsersbyRoom(@PathVariable(value = "roomId") Long roomId) {
-        List<User> userList = userService.findByRoomAndRoomRequestStatus(roomId, RoomRequestStatus.ACCEPT);
-        return new BaseResponse<>(RoomConverter.toUserListDto(userList));
+        try {
+            List<User> userList = userService.findByRoomAndRoomRequestStatus(roomId, RoomRequestStatus.ACCEPT);
+            return new BaseResponse<>(RoomConverter.toUserListDto(userList));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
+
+
 
     // todo : 여기 스펙이 불분명하므로 추후 작성
     @PatchMapping("/room/info")
