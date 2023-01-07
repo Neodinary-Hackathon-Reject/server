@@ -14,10 +14,7 @@ import javax.persistence.*;
 public class RoomInfo extends BaseEntity {
     @Id
     @Column
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
 }
