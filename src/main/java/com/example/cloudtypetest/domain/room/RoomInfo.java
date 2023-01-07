@@ -16,4 +16,6 @@ public class RoomInfo extends BaseEntity {
     @Column
     @GeneratedValue
     private Long id;
+
+    private Integer maxUserCount;
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserGetter {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public User getUserById(Long id) {
         return userRepository.findById(id).get();

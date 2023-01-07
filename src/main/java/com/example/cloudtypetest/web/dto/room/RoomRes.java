@@ -49,7 +49,7 @@ public class RoomRes {
     @AllArgsConstructor
     @Builder
     public static class ConfirmUser {
-        private String field;
+        private String confirmStatus;
     }
 
     @NoArgsConstructor
