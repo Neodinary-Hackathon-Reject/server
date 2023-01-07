@@ -1,6 +1,6 @@
 package com.example.cloudtypetest.service;
 
-import com.example.cloudtypetest.domain.User;
+import com.example.cloudtypetest.domain.user.User;
 import com.example.cloudtypetest.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

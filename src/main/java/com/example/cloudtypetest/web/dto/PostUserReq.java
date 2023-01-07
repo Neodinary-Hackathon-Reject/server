@@ -1,6 +1,6 @@
 package com.example.cloudtypetest.web.dto;
 
-import com.example.cloudtypetest.domain.User;
+import com.example.cloudtypetest.domain.user.User;
 import lombok.*;
 
 import java.util.Set;

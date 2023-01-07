@@ -1,5 +1,7 @@
-package com.example.cloudtypetest.domain;
+package com.example.cloudtypetest.domain.user;
 
+import com.example.cloudtypetest.domain.common.BaseEntity;
+import com.example.cloudtypetest.domain.room.Room;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @DynamicUpdate
 @DynamicInsert
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @Column(name = "id")
@@ -48,19 +50,13 @@ public class User {
     @Column(name="phone")
     private String phone;
 
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @OneToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
 
     @ManyToMany
     @JoinTable(

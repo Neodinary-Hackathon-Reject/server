@@ -1,6 +1,6 @@
 package com.example.cloudtypetest.repository;
 
-import com.example.cloudtypetest.domain.User;
+import com.example.cloudtypetest.domain.user.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
