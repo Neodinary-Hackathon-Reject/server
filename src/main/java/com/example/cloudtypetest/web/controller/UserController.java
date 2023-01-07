@@ -130,14 +130,16 @@ public class UserController {
         return new BaseResponse<>(metaDetailDto);
     }
 
-    /*
-    @GetMapping("/review")
-    public BaseResponse<UserRes.ReviewListDto> getReviewList(){
 
+    @GetMapping("/review")
+    public BaseResponse<List<UserRes.ReviewListDto>> getReviewList(){
+        Long userId=tokenProvider.getUserIdx();
+        List<UserRes.ReviewListDto> reviewListDto=userService.getReviewList(userId);
+        return new BaseResponse<>(reviewListDto);
     }
 
 
-     */
+
 
 
 }

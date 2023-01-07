@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -199,8 +198,6 @@ public class UserService {
         try {
             List<RoomRepository.GetCompleteProject> projectResult = roomRepository.getCompleteProject(userId);
             List<UserRes.Project> project = new ArrayList<>();
-
-
                 projectResult.forEach(
                         result -> {
                             project.add(
@@ -217,5 +214,23 @@ public class UserService {
         } catch (NullPointerException e) {
             return null;
         }
+    }
+
+    public List<UserRes.ReviewListDto> getReviewList(Long userId) {
+        List<RoomRepository.GetReviewProject> reviewResult = roomRepository.getReviewList(userId);
+        List<UserRes.ReviewListDto> review = new ArrayList<>();
+        reviewResult.forEach(
+                result->{
+                    review.add(
+                            new UserRes.ReviewListDto(
+                                    result.getRoomId(),
+                                    result.getImgUrl(),
+                                    result.getTitle(),
+                                    result.getDate()
+                            )
+                    );
+                }
+        );
+        return review;
     }
 }
