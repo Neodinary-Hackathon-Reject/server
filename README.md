@@ -1,7 +1,8 @@
 # 3rd Ne(o)dinery X CMC Hackathon
 너디너리 해커톤 6팀 서버! 💻
-# 서비스명
-## re:ject
+# Stack
+SpringBoot, JPA, MySQL, cloudType, JWT, SpringSecurity
+# 발표자료 re:ject
 
 ![해커톤_1](https://user-images.githubusercontent.com/81962309/211210559-c8dc02d7-9d89-4640-93cb-2b4ebca1bf8a.jpg)
 ![해커톤_2](https://user-images.githubusercontent.com/81962309/211210584-82f8503a-85d8-422e-b5b7-ef37f366c0ce.jpg)
